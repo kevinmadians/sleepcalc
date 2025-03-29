@@ -159,6 +159,49 @@ export default function NapCalculatorPage() {
     setNapDetails(null);
   };
   
+  // Function to add nap to calendar
+  const addToCalendar = () => {
+    if (!napDetails) return;
+    
+    // Parse the sleep and wake times
+    const now = new Date();
+    const [sleepHours, sleepMinutes, sleepAmPm] = napDetails.sleepTime.match(/(\d+):(\d+) (\w+)/)?.slice(1) || [];
+    const [wakeHours, wakeMinutes, wakeAmPm] = napDetails.wakeTime.match(/(\d+):(\d+) (\w+)/)?.slice(1) || [];
+    
+    if (!sleepHours || !wakeHours) return;
+    
+    // Convert to 24-hour format
+    let sleepHour = parseInt(sleepHours);
+    if (sleepAmPm === 'PM' && sleepHour < 12) sleepHour += 12;
+    if (sleepAmPm === 'AM' && sleepHour === 12) sleepHour = 0;
+    
+    let wakeHour = parseInt(wakeHours);
+    if (wakeAmPm === 'PM' && wakeHour < 12) wakeHour += 12;
+    if (wakeAmPm === 'AM' && wakeHour === 12) wakeHour = 0;
+    
+    // Create Date objects
+    const sleepTime = new Date(now);
+    sleepTime.setHours(sleepHour, parseInt(sleepMinutes), 0, 0);
+    
+    const wakeTime = new Date(now);
+    wakeTime.setHours(wakeHour, parseInt(wakeMinutes), 0, 0);
+    
+    // If wake time is earlier than sleep time, it means the nap goes to the next day
+    if (wakeTime < sleepTime) {
+      wakeTime.setDate(wakeTime.getDate() + 1);
+    }
+    
+    // Format for Google Calendar
+    const startTime = sleepTime.toISOString().replace(/-|:|\.\d+/g, '');
+    const endTime = wakeTime.toISOString().replace(/-|:|\.\d+/g, '');
+    
+    // Create Google Calendar URL
+    const googleCalUrl = `https://calendar.google.com/calendar/render?action=TEMPLATE&text=${encodeURIComponent('Power Nap')}&dates=${startTime}/${endTime}&details=${encodeURIComponent('Scheduled nap from Sleep Calculator')}`;
+    
+    // Open in new tab
+    window.open(googleCalUrl, '_blank');
+  };
+  
   return (
     <>
       {/* JSON-LD structured data */}
@@ -181,7 +224,7 @@ export default function NapCalculatorPage() {
           </motion.h1>
           
           <motion.p 
-            className="text-lg text-gray-300 text-center max-w-2xl mx-auto mb-4"
+            className="text-lg text-gray-300 text-center max-w-2xl mx-auto mb-8"
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ delay: 0.3, duration: 0.5 }}
@@ -189,20 +232,10 @@ export default function NapCalculatorPage() {
             Calculate Your Best Nap Times - Boost alertness and productivity with perfectly timed naps
           </motion.p>
           
-          {/* 728x90 Ad Banner */}
-          <motion.div
-            className="w-full flex justify-center mb-4"
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ delay: 0.4, duration: 0.5 }}
-          >
-            <AdPlaceholder width={728} height={90} className="hidden md:flex" />
-            <AdPlaceholder width={320} height={100} className="flex md:hidden" />
-          </motion.div>
-          
-          <div className="grid grid-cols-1 lg:grid-cols-3 gap-4">
+          {/* Main content - centered time picker */}
+          <div className="w-full max-w-3xl mx-auto flex flex-col gap-8 mb-8">
             <motion.div
-              className="glass-card p-6 md:p-8 lg:col-span-2 border-2 border-primary-400 rounded-xl"
+              className="glass-card p-6 md:p-8 w-full border-2 border-primary-400 rounded-xl"
               initial={{ opacity: 0, scale: 0.95 }}
               animate={{ opacity: 1, scale: 1 }}
               transition={{ delay: 0.5, duration: 0.5 }}
@@ -259,6 +292,104 @@ export default function NapCalculatorPage() {
                       </div>
                     </div>
                     
+                    {/* Nap duration info card */}
+                    <div className="mt-4 p-3 bg-dark-800/60 rounded-lg">
+                      <div className="flex items-start gap-3">
+                        <span className="bg-primary-800/30 w-10 h-10 rounded-full flex items-center justify-center flex-shrink-0">
+                          <span className="text-primary-400 text-lg font-bold">
+                            {selectedDuration && (selectedDuration <= 20 ? "⚡" : selectedDuration <= 60 ? "🧠" : "🌀")}
+                          </span>
+                        </span>
+                        <div>
+                          <h3 className="font-medium text-lg">
+                            {selectedDuration && (
+                              selectedDuration <= 20 
+                                ? "Power Nap" 
+                                : selectedDuration <= 60 
+                                  ? "Refresh Nap" 
+                                  : "Full Cycle Nap"
+                            )}
+                          </h3>
+                          <p className="text-sm text-gray-300 mt-1">
+                            {selectedDuration && (
+                              selectedDuration <= 20 
+                                ? "A quick recharge that avoids deep sleep, leaving you alert and ready to go." 
+                                : selectedDuration <= 60 
+                                  ? "Includes some slow-wave sleep for memory consolidation and cognitive improvement." 
+                                  : "Complete sleep cycle including REM sleep for maximum cognitive benefits."
+                            )}
+                          </p>
+                        </div>
+                      </div>
+                    </div>
+                    
+                    {/* Sleep stages section */}
+                    <div className="mt-4 p-3 bg-dark-800/60 rounded-lg">
+                      <h3 className="text-md font-medium mb-3">Sleep Stages You'll Experience:</h3>
+                      <div className="grid grid-cols-4 gap-2">
+                        <div className={`p-2 rounded text-center ${selectedDuration && selectedDuration >= 5 ? 'bg-primary-900/30 border border-primary-800/30' : 'bg-dark-700/50 text-gray-500'}`}>
+                          <div className="text-xs font-medium mb-1">Stage 1</div>
+                          <div className="text-xs">{selectedDuration && selectedDuration >= 5 ? 'Yes' : 'No'}</div>
+                        </div>
+                        <div className={`p-2 rounded text-center ${selectedDuration && selectedDuration >= 15 ? 'bg-primary-900/30 border border-primary-800/30' : 'bg-dark-700/50 text-gray-500'}`}>
+                          <div className="text-xs font-medium mb-1">Stage 2</div>
+                          <div className="text-xs">{selectedDuration && selectedDuration >= 15 ? 'Yes' : 'No'}</div>
+                        </div>
+                        <div className={`p-2 rounded text-center ${selectedDuration && selectedDuration >= 30 ? 'bg-primary-900/30 border border-primary-800/30' : 'bg-dark-700/50 text-gray-500'}`}>
+                          <div className="text-xs font-medium mb-1">Deep Sleep</div>
+                          <div className="text-xs">{selectedDuration && selectedDuration >= 30 ? 'Yes' : 'No'}</div>
+                        </div>
+                        <div className={`p-2 rounded text-center ${selectedDuration && selectedDuration >= 75 ? 'bg-primary-900/30 border border-primary-800/30' : 'bg-dark-700/50 text-gray-500'}`}>
+                          <div className="text-xs font-medium mb-1">REM</div>
+                          <div className="text-xs">{selectedDuration && selectedDuration >= 75 ? 'Yes' : 'No'}</div>
+                        </div>
+                      </div>
+                    </div>
+                    
+                    {/* Expected benefits section */}
+                    <div className="mt-4 p-3 bg-dark-800/60 rounded-lg">
+                      <h3 className="text-md font-medium mb-2">Expected Benefits:</h3>
+                      <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 text-sm">
+                        <div className="flex items-start">
+                          <span className={`mr-2 flex-shrink-0 text-sm ${selectedDuration && selectedDuration >= 10 ? 'text-primary-400' : 'text-gray-500'}`}>
+                            {selectedDuration && selectedDuration >= 10 ? '✓' : '○'}
+                          </span>
+                          <span className={selectedDuration && selectedDuration >= 10 ? '' : 'text-gray-500'}>Increased alertness</span>
+                        </div>
+                        <div className="flex items-start">
+                          <span className={`mr-2 flex-shrink-0 text-sm ${selectedDuration && selectedDuration >= 15 ? 'text-primary-400' : 'text-gray-500'}`}>
+                            {selectedDuration && selectedDuration >= 15 ? '✓' : '○'}
+                          </span>
+                          <span className={selectedDuration && selectedDuration >= 15 ? '' : 'text-gray-500'}>Reduced fatigue</span>
+                        </div>
+                        <div className="flex items-start">
+                          <span className={`mr-2 flex-shrink-0 text-sm ${selectedDuration && selectedDuration >= 30 ? 'text-primary-400' : 'text-gray-500'}`}>
+                            {selectedDuration && selectedDuration >= 30 ? '✓' : '○'}
+                          </span>
+                          <span className={selectedDuration && selectedDuration >= 30 ? '' : 'text-gray-500'}>Improved memory</span>
+                        </div>
+                        <div className="flex items-start">
+                          <span className={`mr-2 flex-shrink-0 text-sm ${selectedDuration && selectedDuration >= 45 ? 'text-primary-400' : 'text-gray-500'}`}>
+                            {selectedDuration && selectedDuration >= 45 ? '✓' : '○'}
+                          </span>
+                          <span className={selectedDuration && selectedDuration >= 45 ? '' : 'text-gray-500'}>Enhanced learning</span>
+                        </div>
+                        <div className="flex items-start">
+                          <span className={`mr-2 flex-shrink-0 text-sm ${selectedDuration && selectedDuration >= 60 ? 'text-primary-400' : 'text-gray-500'}`}>
+                            {selectedDuration && selectedDuration >= 60 ? '✓' : '○'}
+                          </span>
+                          <span className={selectedDuration && selectedDuration >= 60 ? '' : 'text-gray-500'}>Emotional regulation</span>
+                        </div>
+                        <div className="flex items-start">
+                          <span className={`mr-2 flex-shrink-0 text-sm ${selectedDuration && selectedDuration >= 90 ? 'text-primary-400' : 'text-gray-500'}`}>
+                            {selectedDuration && selectedDuration >= 90 ? '✓' : '○'}
+                          </span>
+                          <span className={selectedDuration && selectedDuration >= 90 ? '' : 'text-gray-500'}>Enhanced creativity</span>
+                        </div>
+                      </div>
+                    </div>
+                    
+                    {/* Tips for the perfect nap */}
                     <div className="mt-4 p-3 bg-primary-900/20 border border-primary-800/30 rounded-lg">
                       <h3 className="text-md font-medium text-primary-400 mb-1">Tips for the perfect nap:</h3>
                       <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 text-sm">
@@ -272,73 +403,81 @@ export default function NapCalculatorPage() {
                     </div>
                   </div>
                   
-                  <motion.button
-                    onClick={resetCalculator}
-                    className="btn-secondary w-full sm:w-auto py-2 px-5 flex items-center justify-center gap-2"
-                    whileHover={{ scale: 1.02 }}
-                    whileTap={{ scale: 0.98 }}
-                  >
-                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                      <path d="M2.5 2v6h6M21.5 22v-6h-6"/>
-                      <path d="M22 11.5A10 10 0 0 0 3.2 7.2M2 12.5A10 10 0 0 0 20.8 16.8"/>
-                    </svg>
-                    Calculate Another Nap
-                  </motion.button>
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                    <motion.button
+                      onClick={resetCalculator}
+                      className="btn-secondary py-2 px-5 flex items-center justify-center gap-2"
+                      whileHover={{ scale: 1.02 }}
+                      whileTap={{ scale: 0.98 }}
+                    >
+                      <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                        <path d="M2.5 2v6h6M21.5 22v-6h-6"/>
+                        <path d="M22 11.5A10 10 0 0 0 3.2 7.2M2 12.5A10 10 0 0 0 20.8 16.8"/>
+                      </svg>
+                      Calculate Another Nap
+                    </motion.button>
+                    
+                    <motion.button
+                      onClick={addToCalendar}
+                      className="btn-primary py-2 px-5 flex items-center justify-center gap-2"
+                      whileHover={{ scale: 1.02 }}
+                      whileTap={{ scale: 0.98 }}
+                    >
+                      <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                        <rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect>
+                        <line x1="16" y1="2" x2="16" y2="6"></line>
+                        <line x1="8" y1="2" x2="8" y2="6"></line>
+                        <line x1="3" y1="10" x2="21" y2="10"></line>
+                      </svg>
+                      Add to Calendar
+                    </motion.button>
+                  </div>
                 </>
               )}
             </motion.div>
+          </div>
+          
+          {/* Nap information section - moved below the time picker */}
+          <div className="w-full max-w-3xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
+            <div className="glass-card p-4">
+              <h3 className="text-lg font-semibold mb-3">Optimal Nap Times</h3>
+              
+              <div className="space-y-3">
+                {bestNapTimes.map((timeSlot, index) => (
+                  <div key={index} className="p-2 bg-dark-800/50 rounded-lg">
+                    <div className="font-medium text-primary-400 text-sm">{timeSlot.timeRange}</div>
+                    <p className="text-xs text-gray-300">{timeSlot.description}</p>
+                  </div>
+                ))}
+              </div>
+            </div>
             
-            <motion.div 
-              className="flex flex-col gap-4"
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              transition={{ delay: 0.6, duration: 0.5 }}
-            >
-              {/* 300x250 Ad in Sidebar */}
-              <div className="flex justify-center mb-4">
-                <AdPlaceholder width={300} height={250} />
-              </div>
+            <div className="glass-card p-4">
+              <h3 className="text-lg font-semibold mb-3">Benefits of Napping</h3>
               
-              <div className="glass-card p-4">
-                <h3 className="text-lg font-semibold mb-3">Optimal Nap Times</h3>
-                
-                <div className="space-y-3">
-                  {bestNapTimes.map((timeSlot, index) => (
-                    <div key={index} className="p-2 bg-dark-800/50 rounded-lg">
-                      <div className="font-medium text-primary-400 text-sm">{timeSlot.timeRange}</div>
-                      <p className="text-xs text-gray-300">{timeSlot.description}</p>
-                    </div>
-                  ))}
+              <div className="grid grid-cols-1 gap-1 text-xs text-gray-300">
+                <div className="flex items-start">
+                  <span className="text-primary-400 mr-1 mt-0.5">•</span>
+                  <span>Increases alertness and reduces fatigue</span>
+                </div>
+                <div className="flex items-start">
+                  <span className="text-primary-400 mr-1 mt-0.5">•</span>
+                  <span>Improves mood and emotional regulation</span>
+                </div>
+                <div className="flex items-start">
+                  <span className="text-primary-400 mr-1 mt-0.5">•</span>
+                  <span>Enhances cognitive functions like memory</span>
+                </div>
+                <div className="flex items-start">
+                  <span className="text-primary-400 mr-1 mt-0.5">•</span>
+                  <span>Boosts creativity and problem-solving</span>
+                </div>
+                <div className="flex items-start">
+                  <span className="text-primary-400 mr-1 mt-0.5">•</span>
+                  <span>Reduces stress and lowers blood pressure</span>
                 </div>
               </div>
-              
-              <div className="glass-card p-4">
-                <h3 className="text-lg font-semibold mb-3">Benefits of Napping</h3>
-                
-                <div className="grid grid-cols-1 gap-1 text-xs text-gray-300">
-                  <div className="flex items-start">
-                    <span className="text-primary-400 mr-1 mt-0.5">•</span>
-                    <span>Increases alertness and reduces fatigue</span>
-                  </div>
-                  <div className="flex items-start">
-                    <span className="text-primary-400 mr-1 mt-0.5">•</span>
-                    <span>Improves mood and emotional regulation</span>
-                  </div>
-                  <div className="flex items-start">
-                    <span className="text-primary-400 mr-1 mt-0.5">•</span>
-                    <span>Enhances cognitive functions like memory</span>
-                  </div>
-                  <div className="flex items-start">
-                    <span className="text-primary-400 mr-1 mt-0.5">•</span>
-                    <span>Boosts creativity and problem-solving</span>
-                  </div>
-                  <div className="flex items-start">
-                    <span className="text-primary-400 mr-1 mt-0.5">•</span>
-                    <span>Reduces stress and lowers blood pressure</span>
-                  </div>
-                </div>
-              </div>
-            </motion.div>
+            </div>
           </div>
           
           {/* Educational Section on Napping */}
