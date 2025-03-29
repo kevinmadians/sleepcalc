@@ -50,7 +50,7 @@ export default function Navbar() {
       <div className="container mx-auto px-4 py-3 flex justify-between items-center">
         <Link href="/" className="flex items-center">
           <h1 className="text-xl md:text-2xl font-bold">
-            <span className="text-primary-400">Sleep</span>Calc
+            <span className="text-primary-400">Sleep</span> Calculator
           </h1>
         </Link>
         
@@ -102,7 +102,7 @@ export default function Navbar() {
         <div className="container mx-auto px-4 py-3 flex justify-between items-center">
           <Link href="/" className="flex items-center" onClick={() => setMobileMenuOpen(false)}>
             <h1 className="text-xl font-bold">
-              <span className="text-primary-400">Sleep</span>Calc
+              <span className="text-primary-400">Sleep</span> Calculator
             </h1>
           </Link>
           <button 

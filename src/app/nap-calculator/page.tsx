@@ -16,10 +16,10 @@ const Navbar = dynamic(() => import('@/components/Navbar'), { ssr: false });
 const napCalculatorSchema = {
   "@context": "https://schema.org",
   "@type": "WebApplication",
-  "name": "SleepCalc Nap Calculator",
+  "name": "Sleep Calculator Nap Calculator",
   "applicationCategory": "HealthApplication",
   "operatingSystem": "Web",
-  "description": "Calculate optimal nap durations based on your schedule. Find the perfect power nap, refresh nap, or full cycle nap time with SleepCalc.",
+  "description": "Calculate optimal nap durations based on your schedule. Find the perfect power nap, refresh nap, or full cycle nap time with Sleep Calculator.",
   "offers": {
     "@type": "Offer",
     "price": "0",

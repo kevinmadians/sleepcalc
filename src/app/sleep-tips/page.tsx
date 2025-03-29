@@ -13,7 +13,7 @@ const Navbar = dynamic(() => import('@/components/Navbar'), { ssr: false });
 const sleepTipsSchema = {
   "@context": "https://schema.org",
   "@type": "WebPage",
-  "name": "Sleep Tips - SleepCalc",
+  "name": "Sleep Tips - Sleep Calculator",
   "description": "Improve your sleep quality with science-backed sleep tips and advice. Learn about sleep disorders, environment optimization, and sleep habits.",
   "keywords": "sleep tips, how to sleep better, sleep improvement, sleep quality tips, sleep disorders, insomnia tips, sleep environment, sleep habits, bedtime routine, sleep science, sleep schedule tips, deep sleep tips, REM sleep improvement, sleep hygiene, better sleep quality, falling asleep tips, sleeping disorders"
 };

@@ -12,7 +12,7 @@ export default function Footer() {
       links: [
         { text: 'About', href: '/about' },
         { text: 'Sleep Science', href: '/sleep-tips' },
-        { text: 'Contact Us', href: '/contact' }
+        { text: 'Contact', href: '/contact' }
       ]
     },
     {

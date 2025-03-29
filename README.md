@@ -21,10 +21,6 @@ A sophisticated web application designed to help users optimize their sleep cycl
 - **Accessibility-Focused**: Designed with accessibility in mind
 - **Dark Theme**: Eye-friendly dark mode optimized for nighttime use
 
-## 🚀 Live Demo
-
-Visit the live application: [https://sleepcalc.vercel.app](https://sleepcalc.vercel.app)
-
 ## 🛠️ Technology Stack
 
 - **Framework**: [Next.js 15](https://nextjs.org/) with App Router and React Server Components
@@ -33,44 +29,6 @@ Visit the live application: [https://sleepcalc.vercel.app](https://sleepcalc.ver
 - **Language**: [TypeScript](https://www.typescriptlang.org/) for type safety
 - **State Management**: React Hooks and Context API
 - **Deployment**: [Vercel](https://vercel.com/) for seamless hosting and CI/CD
-
-## 📋 Prerequisites
-
-- Node.js 18.17.0 or later
-- npm or yarn package manager
-
-## 🚦 Getting Started
-
-1. Clone the repository:
-   ```bash
-   git clone https://github.com/yourusername/sleepcalc.git
-   cd sleepcalc
-   ```
-
-2. Install dependencies:
-   ```bash
-   npm install
-   # or
-   yarn install
-   ```
-
-3. Start the development server:
-   ```bash
-   npm run dev
-   # or
-   yarn dev
-   ```
-
-4. Open [http://localhost:3000](http://localhost:3000) in your browser to see the application.
-
-## 📝 Available Scripts
-
-- `npm run dev` - Start the development server
-- `npm run build` - Build the application for production
-- `npm run start` - Start the production server
-- `npm run lint` - Run ESLint to check code quality
-- `npm run clean` - Clean the Next.js cache directory
-- `npm run export` - Export the app as static HTML (optional)
 
 ## 🔍 Project Structure
 
@@ -89,30 +47,6 @@ sleepcalc/
 ├── tsconfig.json       # TypeScript configuration
 └── vercel.json         # Vercel deployment configuration
 ```
-
-## 🔧 Environment Variables
-
-Create a `.env.local` file in the root directory with the following variables:
-
-```
-NEXT_PUBLIC_SITE_URL=http://localhost:3000
-NODE_ENV=development
-```
-
-For production, these are configured in your Vercel dashboard.
-
-## 📤 Deployment
-
-### Vercel (Recommended)
-
-This project is optimized for Vercel deployment:
-
-1. Push your code to a GitHub repository
-2. Import the project on [Vercel](https://vercel.com/new)
-3. Vercel will automatically detect Next.js and apply the optimal settings
-4. Click "Deploy" and your app will be live within minutes
-
-For detailed deployment instructions, see [VERCEL-DEPLOYMENT.md](VERCEL-DEPLOYMENT.md).
 
 ## 🤝 Contributing
 
@@ -143,4 +77,4 @@ Have questions or suggestions? Please open an issue on this repository.
 
 ---
 
-Built with ❤️ by Kevin
+Built with ❤️ by Kevin M.S

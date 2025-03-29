@@ -77,11 +77,11 @@ const sleepHealthBenefits = [
 const sleepResultsSchema = {
   "@context": "https://schema.org",
   "@type": "WebPage",
-  "name": "SleepCalc Sleep Results",
-  "description": "View your personalized sleep cycle recommendations. SleepCalc provides optimal bedtimes and wake-up times based on 90-minute sleep cycles.",
+  "name": "Sleep Calculator Sleep Results",
+  "description": "View your personalized sleep cycle recommendations. Sleep Calculator provides optimal bedtimes and wake-up times based on 90-minute sleep cycles.",
   "mainEntity": {
     "@type": "HealthAndBeautyBusiness",
-    "name": "SleepCalc Sleep Calculator",
+    "name": "Sleep Calculator",
     "description": "Calculate optimal sleep times based on 90-minute sleep cycles."
   },
   "keywords": "sleep calculator results, optimal wake time, ideal bedtime, sleep cycle results, when to sleep calculator, when to wake up calculator, REM sleep calculator results, sleep cycle times, 90-minute sleep cycle calculator, best time to wake up, best bedtime calculator, sleep efficiency results, personalized sleep schedule, sleep quality recommendations, deep sleep optimization, sleep cycle chart, sleep duration calculator results"
@@ -221,7 +221,7 @@ function SleepResultsContent() {
       results.map((time, i) => 
         `${formatTime(time)} (${getSleepDuration(getCycleCount(i))} of sleep)`
       ).join('\n') +
-      '\nCalculated with Sleep Cycle Calculator';
+      '\nCalculated with Sleep Calculator';
     
     try {
       if (navigator.share) {

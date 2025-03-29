@@ -16,7 +16,7 @@ const Navbar = dynamic(() => import('@/components/Navbar'), { ssr: false });
 const sleepCalculatorSchema = {
   "@context": "https://schema.org",
   "@type": "WebApplication",
-  "name": "SleepCalc",
+  "name": "Sleep Calculator",
   "applicationCategory": "HealthApplication",
   "operatingSystem": "Web",
   "description": "Calculate your best sleep cycle times based on 90-minute sleep cycles. Find optimal bedtimes and wake-up times for better sleep quality.",
