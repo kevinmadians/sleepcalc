@@ -8,8 +8,6 @@
 
 A sophisticated web application designed to help users optimize their sleep cycles. Based on the science of 90-minute sleep cycles, SleepCalc provides precise bedtime and wake-up recommendations to ensure users wake up between cycles, feeling more refreshed and energized.
 
-![SleepCalc Screenshot](public/og-image.png)
-
 ## 🌟 Features
 
 - **Intelligent Sleep Cycle Calculation**: Calculate optimal times to sleep or wake up based on 90-minute sleep cycles and 15-minute fall-asleep time
@@ -145,4 +143,4 @@ Have questions or suggestions? Please open an issue on this repository.
 
 ---
 
-Built with ❤️ by [Your Name/Team]
+Built with ❤️ by Kevin
