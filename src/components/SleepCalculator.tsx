@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import CustomTimePicker from './CustomTimePicker';
 
@@ -22,16 +22,8 @@ const SleepCalculator = ({ mode }: SleepCalculatorProps) => {
   const [results, setResults] = useState<Date[]>([]);
   const [copied, setCopied] = useState(false);
   
-  // Calculate sleep times when time changes or mode changes
-  useEffect(() => {
-    calculateSleepTimes();
-  }, [time, mode]);
-  
-  const handleTimeChange = (newTime: string) => {
-    setTime(newTime);
-  };
-  
-  const calculateSleepTimes = () => {
+  // Define calculateSleepTimes with useCallback
+  const calculateSleepTimes = useCallback(() => {
     const [hours, minutes] = time.split(':').map(Number);
     const baseTime = new Date();
     baseTime.setHours(hours, minutes, 0, 0);
@@ -57,6 +49,15 @@ const SleepCalculator = ({ mode }: SleepCalculatorProps) => {
     }
     
     setResults(calculatedTimes);
+  }, [time, mode]);
+  
+  // Calculate sleep times when time changes or mode changes
+  useEffect(() => {
+    calculateSleepTimes();
+  }, [calculateSleepTimes]);
+  
+  const handleTimeChange = (newTime: string) => {
+    setTime(newTime);
   };
   
   const formatTime = (date: Date) => {

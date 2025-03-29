@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect, Suspense } from 'react';
+import { useState, useEffect, Suspense, useCallback } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import dynamic from 'next/dynamic';
 import { useRouter, useSearchParams } from 'next/navigation';
@@ -102,14 +102,8 @@ function SleepResultsContent() {
   const time = searchParams.get('time') || '08:00';
   const mode = searchParams.get('mode') as 'wakeup' | 'sleep' || 'wakeup';
   
-  // Handle client-side mounting
-  useEffect(() => {
-    setMounted(true);
-    calculateSleepTimes();
-    generateSleepQualityTips();
-  }, [time, mode]);
-  
-  const calculateSleepTimes = () => {
+  // Define functions with useCallback to avoid dependency cycles
+  const calculateSleepTimes = useCallback(() => {
     const [hours, minutes] = time.split(':').map(Number);
     const baseTime = new Date();
     baseTime.setHours(hours, minutes, 0, 0);
@@ -135,10 +129,10 @@ function SleepResultsContent() {
     }
     
     setResults(calculatedTimes);
-  };
+  }, [time, mode]);
   
   // Generate personalized sleep quality tips based on the time
-  const generateSleepQualityTips = () => {
+  const generateSleepQualityTips = useCallback(() => {
     const [hours] = time.split(':').map(Number);
     const tips: string[] = [];
     
@@ -191,7 +185,14 @@ function SleepResultsContent() {
     }
     
     setSleepQualityTips(tips);
-  };
+  }, [time, mode]);
+  
+  // Handle client-side mounting
+  useEffect(() => {
+    setMounted(true);
+    calculateSleepTimes();
+    generateSleepQualityTips();
+  }, [calculateSleepTimes, generateSleepQualityTips]);
   
   const formatTime = (date: Date) => {
     const hours = date.getHours();
