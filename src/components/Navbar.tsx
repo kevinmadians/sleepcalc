@@ -35,6 +35,7 @@ export default function Navbar() {
     { name: 'Sleep Calculator', href: '/' },
     { name: 'Nap Calculator', href: '/nap-calculator' },
     { name: 'Sleep Tips', href: '/sleep-tips' },
+    { name: 'Sleep Assessment', href: '/sleep-assessment' },
   ];
   
   // Define mobile menu links (including the extra pages)
@@ -43,6 +44,7 @@ export default function Navbar() {
     { name: 'Privacy Policy', href: '/privacy-policy' },
     { name: 'Terms of Use', href: '/terms-of-use' },
     { name: 'Cookie Policy', href: '/cookie-policy' },
+    { name: 'Sleep Assessment', href: '/sleep-assessment' },
   ];
   
   return (
@@ -61,7 +63,7 @@ export default function Navbar() {
               <li key={link.href}>
                 <Link 
                   href={link.href} 
-                  className="text-gray-300 hover:text-white transition-colors"
+                  className="text-white hover:text-primary-400 transition-colors font-bold"
                 >
                   {link.name}
                 </Link>
@@ -73,7 +75,7 @@ export default function Navbar() {
         {/* Mobile Menu Button */}
         <button 
           onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-          className="md:hidden p-2 text-gray-300 hover:text-white focus:outline-none"
+          className="md:hidden p-2 text-white hover:text-primary-400 focus:outline-none"
           aria-label={mobileMenuOpen ? "Close menu" : "Open menu"}
           aria-expanded={mobileMenuOpen}
         >
@@ -129,7 +131,7 @@ export default function Navbar() {
                 <li key={link.href} className="text-center">
                   <Link 
                     href={link.href} 
-                    className="block py-4 px-4 rounded-lg text-white text-xl hover:bg-primary-600/30"
+                    className="block py-4 px-4 rounded-lg text-white text-xl hover:bg-primary-600/30 font-bold"
                     onClick={() => setMobileMenuOpen(false)}
                   >
                     {link.name}
@@ -145,7 +147,7 @@ export default function Navbar() {
                 <li key={link.href} className="text-center">
                   <Link 
                     href={link.href} 
-                    className="block py-3 px-4 rounded-lg text-white text-lg hover:bg-primary-600/30"
+                    className="block py-3 px-4 rounded-lg text-white text-lg hover:bg-primary-600/30 font-bold"
                     onClick={() => setMobileMenuOpen(false)}
                   >
                     {link.name}

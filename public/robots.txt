@@ -1,4 +1,4 @@
-# robots.txt for SleepCalc.net
+# robots.txt for Sleep Calculator
 
 User-agent: *
 Allow: /

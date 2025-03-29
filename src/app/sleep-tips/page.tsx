@@ -437,7 +437,7 @@ export default function SleepTipsPage() {
           transition={{ delay: 0.8, duration: 0.5 }}
         >
           <h2 className="text-2xl md:text-3xl font-bold mb-6 text-center">
-            Sleep Quality <span className="text-primary-400">Self-Assessment</span>
+            Quick Sleep Quality <span className="text-primary-400">Self-Assessment</span>
           </h2>
           
           <div className="glass-card p-6 md:p-8">

@@ -20,7 +20,8 @@ export default function Footer() {
       links: [
         { text: 'Sleep Calculator', href: '/' },
         { text: 'Nap Calculator', href: '/nap-calculator' },
-        { text: 'Sleep Tips', href: '/sleep-tips' }
+        { text: 'Sleep Tips', href: '/sleep-tips' },
+        { text: 'Sleep Assessment', href: '/sleep-assessment' }
       ]
     },
     {
@@ -57,9 +58,9 @@ export default function Footer() {
         <div className="grid grid-cols-1 md:grid-cols-4 gap-8 mb-10">
           {/* Left Column - Site Info */}
           <div className="text-gray-300">
-            <h3 className="text-lg font-semibold mb-4 text-white">Sleep Better with SleepCalc</h3>
+            <h3 className="text-lg font-semibold mb-4 text-white">Sleep Better with Sleep Calculator</h3>
             <p className="text-sm mb-4">
-              Calculate Your Best Sleep Cycle with SleepCalc - the ultimate tool for optimizing your sleep schedule and improving your rest quality.
+              Calculate Your Best Sleep Cycle with Sleep Calculator - The ultimate tool for optimizing your sleep schedule and improving your rest quality.
             </p>
             <div className="flex space-x-4 mt-4">
               {socialLinks.map((social, index) => (
