@@ -1,0 +1,13 @@
+# robots.txt for SleepCalc.net
+
+User-agent: *
+Allow: /
+
+# Disallow crawling of development routes
+Disallow: /api/
+Disallow: /_next/
+Disallow: /static/
+Disallow: /public/
+
+# Sitemap
+Sitemap: https://sleepcalc.net/sitemap.xml 

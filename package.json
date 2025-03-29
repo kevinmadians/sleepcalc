@@ -1,0 +1,36 @@
+{
+  "name": "curs",
+  "version": "1.0.0",
+  "main": "index.js",
+  "scripts": {
+    "dev": "cross-env NODE_OPTIONS='--no-warnings' next dev",
+    "build": "cross-env NODE_OPTIONS='--no-warnings' NEXT_TELEMETRY_DISABLED=1 next build",
+    "start": "cross-env NODE_OPTIONS='--no-warnings' next start",
+    "lint": "next lint",
+    "export": "cross-env NODE_OPTIONS='--no-warnings' next build && next export",
+    "clean": "rd -r -force .next -ErrorAction SilentlyContinue"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@types/node": "^22.13.14",
+    "@types/react": "^19.0.12",
+    "@types/react-dom": "^19.0.4",
+    "autoprefixer": "10.4.16",
+    "framer-motion": "^12.6.2",
+    "next": "^15.2.4",
+    "postcss": "8.4.31",
+    "react": "^19.1.0",
+    "react-dom": "^19.1.0",
+    "tailwindcss": "3.3.0",
+    "typescript": "^5.8.2",
+    "zustand": "^5.0.3"
+  },
+  "devDependencies": {
+    "cross-env": "^7.0.3",
+    "eslint": "^9.23.0",
+    "eslint-config-next": "^15.2.4"
+  },
+  "description": ""
+}

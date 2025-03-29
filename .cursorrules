@@ -1,0 +1,172 @@
+# Instructions
+
+During your interaction with the user, if you find anything reusable in this project (e.g. version of a library, model name), especially about a fix to a mistake you made or a correction you received, you should take note in the `Lessons` section in the `.cursorrules` file so you will not make the same mistake again. 
+
+You should also use the `.cursorrules` file as a Scratchpad to organize your thoughts. Especially when you receive a new task, you should first review the content of the Scratchpad, clear old different task if necessary, first explain the task, and plan the steps you need to take to complete the task. You can use todo markers to indicate the progress, e.g.
+[X] Task 1
+[ ] Task 2
+
+Also update the progress of the task in the Scratchpad when you finish a subtask.
+Especially when you finished a milestone, it will help to improve your depth of task accomplishment to use the Scratchpad to reflect and plan.
+The goal is to help you maintain a big picture as well as the progress of the task. Always refer to the Scratchpad when you plan the next step.
+
+# Tools
+
+Note all the tools are in python3. So in the case you need to do batch processing, you can always consult the python files and write your own script.
+
+## Screenshot Verification
+
+The screenshot verification workflow allows you to capture screenshots of web pages and verify their appearance using LLMs. The following tools are available:
+
+1. Screenshot Capture:
+```bash
+venv/bin/python3 tools/screenshot_utils.py URL [--output OUTPUT] [--width WIDTH] [--height HEIGHT]
+```
+
+2. LLM Verification with Images:
+```bash
+venv/bin/python3 tools/llm_api.py --prompt "Your verification question" --provider {openai|anthropic} --image path/to/screenshot.png
+```
+
+Example workflow:
+```python
+from screenshot_utils import take_screenshot_sync
+from llm_api import query_llm
+
+# Take a screenshot
+
+screenshot_path = take_screenshot_sync('https://example.com', 'screenshot.png')
+
+# Verify with LLM
+
+response = query_llm(
+    "What is the background color and title of this webpage?",
+    provider="openai",  # or "anthropic"
+    image_path=screenshot_path
+)
+print(response)
+```
+
+## LLM
+
+You always have an LLM at your side to help you with the task. For simple tasks, you could invoke the LLM by running the following command:
+```
+venv/bin/python3 ./tools/llm_api.py --prompt "What is the capital of France?" --provider "anthropic"
+```
+
+The LLM API supports multiple providers:
+- OpenAI (default, model: gpt-4o)
+- Azure OpenAI (model: configured via AZURE_OPENAI_MODEL_DEPLOYMENT in .env file, defaults to gpt-4o-ms)
+- DeepSeek (model: deepseek-chat)
+- Anthropic (model: claude-3-sonnet-20240229)
+- Gemini (model: gemini-pro)
+- Local LLM (model: Qwen/Qwen2.5-32B-Instruct-AWQ)
+
+But usually it's a better idea to check the content of the file and use the APIs in the `tools/llm_api.py` file to invoke the LLM if needed.
+
+## Web browser
+
+You could use the `tools/web_scraper.py` file to scrape the web.
+```bash
+venv/bin/python3 ./tools/web_scraper.py --max-concurrent 3 URL1 URL2 URL3
+```
+This will output the content of the web pages.
+
+## Search engine
+
+You could use the `tools/search_engine.py` file to search the web.
+```bash
+venv/bin/python3 ./tools/search_engine.py "your search keywords"
+```
+This will output the search results in the following format:
+```
+URL: https://example.com
+Title: This is the title of the search result
+Snippet: This is a snippet of the search result
+```
+If needed, you can further use the `web_scraper.py` file to scrape the web page content.
+
+# Lessons
+
+## User Specified Lessons
+
+- You have a python venv in ./venv. Always use (activate) it when doing python development. First, to check whether 'uv' is available, use `which uv`. If that's the case, first activate the venv, and then use `uv pip install` to install packages. Otherwise, fall back to `pip`.
+- Due to Cursor's limit, when you use `git` and `gh` and need to submit a multiline commit message, first write the message in a file, and then use `git commit -F <filename>` or similar command to commit. And then remove the file. Include "[Cursor] " in the commit message and PR title.
+
+## Cursor learned
+
+- For search results, ensure proper handling of different character encodings (UTF-8) for international queries
+- When using seaborn styles in matplotlib, use 'seaborn-v0_8' instead of 'seaborn' as the style name due to recent seaborn version changes
+- Use 'gpt-4o' as the model name for OpenAI's GPT-4 with vision capabilities
+- When searching for recent news, use the current year (2025) instead of previous years, or simply use the "recent" keyword to get the latest information
+- When working with Windows PowerShell, use separate commands instead of chaining with '&&' since that syntax is not supported in the default PowerShell version
+- When using Tailwind CSS with Next.js, use specific compatible versions: tailwindcss@3.3.0, postcss@8.4.31, and autoprefixer@10.4.16. Newer versions of Tailwind CSS may require @tailwindcss/postcss as a separate package.
+- To fix Next.js hydration errors, use `suppressHydrationWarning` on elements that might have client/server differences, and ensure any client-side code that accesses browser APIs is only executed after component mounting (using useEffect with an empty dependency array).
+- When dealing with Next.js hydration errors involving theme toggling, use dynamic imports with `{ ssr: false }` for components that use browser APIs or local storage, implement mounted state tracking in components, and ensure proper context initialization.
+- When implementing a multi-page navigation structure in Next.js, use `usePathname()` from 'next/navigation' to determine the current active page and style navigation links accordingly. 
+- For creating separate pages in a Next.js app, organize them in the app directory structure (e.g., src/app/page-name/page.tsx) and use client-side routing via `Link` components for navigation between pages.
+- When implementing a theme toggling system in Next.js, apply the theme class to the body element rather than the html element to ensure proper theme style application. Also ensure Tailwind's darkMode is set to 'class' in the config.
+- To diagnose Next.js routing issues in Windows environments, use `dir src\app\path-name` to check if the directory and page.tsx file exist in the correct location.
+- For theming with Tailwind CSS, use conditional class variants like `.dark .class-name` and `body:not(.dark) .class-name` to define different styles based on the current theme.
+- For UI design, it's better to stick with a single theme (like dark mode) if multi-theme support isn't necessary, as it simplifies CSS and prevents potential styling issues.
+
+# Scratchpad
+
+## Sleep Calculator Web App Project
+
+### Project Overview
+Developing a modern web application that replicates SleepCalculator.com with enhanced design, UX, and features. The app will calculate optimal sleep and wake-up times based on 90-minute sleep cycles.
+
+### Tech Stack
+- Frontend: Next.js (React) with Tailwind CSS
+- State Management: React Context API or Zustand
+- Animations: Framer Motion
+- Deployment: Vercel
+
+### Project Steps
+[X] Initialize Next.js project with Tailwind CSS and other dependencies
+[X] Create core components (Navbar, Footer, SleepCalculator)
+[X] Implement sleep cycle calculation logic
+[X] Design modern UI with dark theme and animations
+[X] Add additional features (nap calculator, time zone support, light/dark mode toggle functionality)
+[X] Add sleep tips section with sleep science information
+[X] Fix Tailwind CSS configuration
+[X] Fix hydration issues and implement custom time picker
+[X] Improve time picker UI to match design in screenshot
+[X] Enhance time picker usability
+[X] Restructure app into multi-page layout with dedicated pages
+  [X] Create a main home page with sleep calculator initial step
+  [X] Create sleep results page to display calculation output
+  [X] Create separate nap calculator page
+  [X] Create sleep tips page
+  [X] Update navigation to link between all pages
+[X] Fix nap calculator navigation and add theme-based background styles
+[X] Revert to dark-only theme (removed light theme support)
+[ ] Optimize performance
+[ ] Deploy to Vercel
+
+### Current Progress
+Completed the implementation of the Sleep Calculator app with a multi-page structure:
+- Created a home page that serves as the entry point for the sleep calculator, where users select whether they want to calculate bedtime or wake-up time
+- Implemented a sleep results page that shows the calculation results based on user input
+- Created a dedicated nap calculator page with different nap duration options
+- Added a sleep tips page featuring expandable tips and sleep science information
+- Updated the navigation menu to provide access to all pages
+- Ensured consistent styling and animations across all pages
+- Applied responsive design principles throughout the application
+- Used client-side routing for smooth navigation between pages
+- Properly handled hydration issues
+- Fixed nap calculator navigation by ensuring proper page structure
+- Created a not-found page for handling 404 errors
+- Simplified the application to use only dark theme by:
+  - Removing ThemeProvider and context
+  - Removing theme toggle button from navbar
+  - Simplifying CSS to only include dark theme styles
+  - Removing darkMode setting from tailwind.config.js
+
+### Next Steps
+1. Implement responsive design improvements
+2. Add SEO optimization
+3. Accessibility improvements
+4. Final testing and bug fixes
+5. Prepare for deployment to Vercel
