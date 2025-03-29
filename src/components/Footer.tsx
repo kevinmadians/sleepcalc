@@ -21,7 +21,9 @@ export default function Footer() {
         { text: 'Sleep Calculator', href: '/' },
         { text: 'Nap Calculator', href: '/nap-calculator' },
         { text: 'Sleep Tips', href: '/sleep-tips' },
-        { text: 'Sleep Assessment', href: '/sleep-assessment' }
+        { text: 'Sleep Assessment', href: '/sleep-assessment' },
+        { text: 'Sleep Debt Calculator', href: '/sleep-debt' },
+        { text: 'Chronotype Analyzer', href: '/chronotype-analyzer' }
       ]
     },
     {

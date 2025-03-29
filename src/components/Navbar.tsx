@@ -34,8 +34,10 @@ export default function Navbar() {
   const navigationLinks = [
     { name: 'Sleep Calculator', href: '/' },
     { name: 'Nap Calculator', href: '/nap-calculator' },
+    { name: 'Sleep Debt', href: '/sleep-debt' },
     { name: 'Sleep Tips', href: '/sleep-tips' },
     { name: 'Sleep Assessment', href: '/sleep-assessment' },
+    { name: 'Chronotype Analyzer', href: '/chronotype-analyzer' },
   ];
   
   // Define mobile menu links (including the extra pages)
@@ -44,7 +46,6 @@ export default function Navbar() {
     { name: 'Privacy Policy', href: '/privacy-policy' },
     { name: 'Terms of Use', href: '/terms-of-use' },
     { name: 'Cookie Policy', href: '/cookie-policy' },
-    { name: 'Sleep Assessment', href: '/sleep-assessment' },
   ];
   
   return (

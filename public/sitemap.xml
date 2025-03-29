@@ -25,6 +25,18 @@
     <priority>0.8</priority>
   </url>
   <url>
+    <loc>https://sleepcalc.net/chronotype-analyzer</loc>
+    <lastmod>2024-09-10</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://sleepcalc.net/sleep-debt</loc>
+    <lastmod>2024-09-10</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
     <loc>https://sleepcalc.net/contact</loc>
     <lastmod>2024-09-01</lastmod>
     <changefreq>monthly</changefreq>
