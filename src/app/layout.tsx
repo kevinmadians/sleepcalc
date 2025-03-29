@@ -15,6 +15,25 @@ export const metadata: Metadata = {
   alternates: {
     canonical: '/'
   },
+  icons: {
+    icon: '/favicon.ico',
+    shortcut: '/favicon.ico',
+    apple: '/icons/apple-touch-icon.png',
+    other: [
+      {
+        rel: 'icon',
+        type: 'image/png',
+        sizes: '32x32',
+        url: '/icons/favicon-32x32.png',
+      },
+      {
+        rel: 'icon',
+        type: 'image/png',
+        sizes: '16x16',
+        url: '/icons/favicon-16x16.png',
+      },
+    ],
+  },
   openGraph: {
     type: 'website',
     url: 'https://sleepcalc.net',

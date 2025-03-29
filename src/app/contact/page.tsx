@@ -231,30 +231,6 @@ export default function ContactPage() {
               <div className="flex justify-center mb-6">
                 <AdPlaceholder width={300} height={250} />
               </div>
-              
-              <div className="glass-card p-5">
-                <h3 className="text-lg font-semibold mb-4">Contact Hours</h3>
-                <div className="space-y-2 text-sm">
-                  <p className="flex justify-between">
-                    <span className="text-gray-400">Monday - Friday:</span>
-                    <span>9 AM - 5 PM</span>
-                  </p>
-                  <p className="flex justify-between">
-                    <span className="text-gray-400">Saturday:</span>
-                    <span>10 AM - 2 PM</span>
-                  </p>
-                  <p className="flex justify-between">
-                    <span className="text-gray-400">Sunday:</span>
-                    <span>Closed</span>
-                  </p>
-                </div>
-                
-                <div className="h-px bg-dark-700 my-4"></div>
-                
-                <p className="text-sm text-gray-400">
-                  We strive to respond to all inquiries within 24-48 business hours.
-                </p>
-              </div>
             </div>
           </div>
         </div>

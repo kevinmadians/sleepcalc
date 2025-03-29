@@ -1,6 +1,7 @@
 "use client";
 
-import Link from 'next/link';
+import { useEffect } from 'react';
+import { useRouter } from 'next/navigation';
 import { motion } from 'framer-motion';
 import dynamic from 'next/dynamic';
 import Footer from '@/components/Footer';
@@ -10,6 +11,17 @@ import AdPlaceholder from '@/components/AdPlaceholder';
 const Navbar = dynamic(() => import('@/components/Navbar'), { ssr: false });
 
 export default function NotFound() {
+  const router = useRouter();
+  
+  // Redirect to cookie-policy page after a short delay
+  useEffect(() => {
+    const redirectTimer = setTimeout(() => {
+      router.push('/cookie-policy');
+    }, 3000); // 3 second delay before redirect
+    
+    return () => clearTimeout(redirectTimer);
+  }, [router]);
+  
   return (
     <main className="flex min-h-screen flex-col items-center justify-between">
       <Navbar />
@@ -26,7 +38,7 @@ export default function NotFound() {
           animate={{ opacity: 1 }}
           transition={{ delay: 0.2, duration: 0.7 }}
         >
-          <span className="text-gradient">404</span> Not Found
+          <span className="text-gradient">Redirecting</span>
         </motion.h1>
         
         <motion.p 
@@ -35,18 +47,17 @@ export default function NotFound() {
           animate={{ opacity: 1 }}
           transition={{ delay: 0.4, duration: 0.7 }}
         >
-          The page you're looking for doesn't exist or has been moved.
+          You will be redirected to our Cookie Policy page in a few seconds...
         </motion.p>
         
-        {/* Ad banner */}
+        {/* Loading indicator */}
         <motion.div
-          className="w-full flex justify-center my-6 max-w-4xl"
+          className="w-16 h-16 my-6"
           initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ delay: 0.5, duration: 0.5 }}
+          animate={{ opacity: 1, rotate: 360 }}
+          transition={{ delay: 0.5, duration: 1, repeat: Infinity, ease: "linear" }}
         >
-          <AdPlaceholder width={728} height={90} className="hidden md:flex" />
-          <AdPlaceholder width={320} height={100} className="flex md:hidden" />
+          <div className="w-full h-full border-4 border-t-primary-400 border-r-primary-400/70 border-b-primary-400/40 border-l-primary-400/10 rounded-full"></div>
         </motion.div>
         
         <motion.div
@@ -55,15 +66,12 @@ export default function NotFound() {
           transition={{ delay: 0.6, duration: 0.5 }}
           className="mt-6"
         >
-          <Link href="/">
-            <motion.button
-              className="bg-primary-600 text-white py-3 px-6 rounded-lg hover:bg-primary-700 transition-colors font-medium"
-              whileHover={{ scale: 1.02 }}
-              whileTap={{ scale: 0.98 }}
-            >
-              Back to Home
-            </motion.button>
-          </Link>
+          <button
+            onClick={() => router.push('/cookie-policy')}
+            className="bg-primary-600 text-white py-3 px-6 rounded-lg hover:bg-primary-700 transition-colors font-medium"
+          >
+            Go to Cookie Policy Now
+          </button>
         </motion.div>
       </motion.div>
       
