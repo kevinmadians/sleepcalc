@@ -62,7 +62,7 @@ export default function Footer() {
           <div className="text-gray-300">
             <h3 className="text-lg font-semibold mb-4 text-white">Sleep Better with Sleep Calculator</h3>
             <p className="text-sm mb-4">
-              Calculate Your Best Sleep Cycle with Sleep Calculator - The ultimate tool for optimizing your sleep schedule and improving your rest quality.
+              Calculate Your Ideal Sleep & Wake Times with Sleep Calculator - The ultimate tool for optimizing your sleep schedule and improving your rest quality.
             </p>
             <div className="flex space-x-4 mt-4">
               {socialLinks.map((social, index) => (
@@ -102,9 +102,9 @@ export default function Footer() {
         
         {/* Bottom - Copyright */}
         <div className="border-t border-dark-700 pt-6 mt-8 text-sm text-center text-gray-500">
-          <p>© {currentYear} SleepCalc. All rights reserved.</p>
+          <p>© {currentYear} Sleep Calculator. All rights reserved.</p>
           <p className="mt-2">
-            <span className="text-primary-400">SleepCalc</span> - Calculate Your Best Sleep Cycle
+            <span className="text-primary-400">Sleep Calculator</span> - Calculate Your Ideal Sleep & Wake Times
           </p>
         </div>
       </div>

@@ -1,136 +1,147 @@
 "use client";
 
-import { useState, useEffect } from 'react';
+import React, { useEffect } from 'react';
 import { motion } from 'framer-motion';
-import dynamic from 'next/dynamic';
-import Footer from '@/components/Footer';
-import AdPlaceholder from '@/components/AdPlaceholder';
-
-// Dynamically import Navbar with no SSR to avoid hydration issues
-const Navbar = dynamic(() => import('@/components/Navbar'), { ssr: false });
+import Navbar from '@/components/layout/Navbar';
+import Footer from '@/components/layout/Footer';
+import Link from 'next/link';
 
 export default function TermsOfUsePage() {
-  const [mounted, setMounted] = useState(false);
-  
+  // Set document title
   useEffect(() => {
-    setMounted(true);
+    if (typeof window !== 'undefined') {
+      document.title = "Terms of Use - Sleep Calculator";
+    }
   }, []);
-  
+
   return (
-    <div className="min-h-screen flex flex-col bg-gradient-to-b from-dark-900 to-dark-800">
-      {mounted && <Navbar />}
+    <div className="flex flex-col min-h-screen bg-dark-950">
+      <Navbar />
       
       <main className="flex-grow container mx-auto px-4 py-8 md:py-12">
-        {/* Ad banner at top */}
-        <div className="flex justify-center mb-8">
-          <AdPlaceholder width={728} height={90} className="hidden md:flex" />
-          <AdPlaceholder width={320} height={100} className="flex md:hidden" />
-        </div>
-        
-        <div className="flex flex-col md:flex-row gap-8 max-w-6xl mx-auto">
-          <motion.div
-            className="glass-card p-6 md:p-8 md:w-3/4"
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
+        <div className="max-w-4xl mx-auto">
+          <motion.div 
+            className="glass-card p-6 md:p-8 mb-8"
+            initial={{ opacity: 0, scale: 0.95 }}
+            animate={{ opacity: 1, scale: 1 }}
             transition={{ duration: 0.5 }}
           >
-            <h1 className="text-2xl md:text-3xl font-bold mb-6 text-gradient">Terms of Use</h1>
+            <h1 className="text-2xl md:text-3xl font-bold mb-4 text-primary-400">Terms of Use</h1>
             
-            <p className="text-sm text-gray-400 mb-6">Last Updated: {new Date().toLocaleDateString()}</p>
+            <div className="my-6"></div>
             
-            <div className="space-y-6 text-gray-200">
-              <section>
-                <h2 className="text-xl font-semibold mb-3 text-white">1. Acceptance of Terms</h2>
-                <p className="mb-4">
-                  By accessing and using this website (Sleep Calculator), you accept and agree to be bound by the terms and provision of this agreement. If you do not agree to abide by these terms, please do not use this website.
-                </p>
-              </section>
+            <div className="prose prose-dark max-w-none">
+              <p className="text-gray-300 mb-4">
+                Please read these Terms of Use ("Terms", "Terms of Use") carefully before using the Sleep Calculator website (the "Service") operated by Sleep Calculator ("us", "we", or "our").
+              </p>
               
-              <section>
-                <h2 className="text-xl font-semibold mb-3 text-white">2. Use License</h2>
-                <p className="mb-4">
-                  Permission is granted to temporarily use this website for personal, non-commercial purposes only. This is the grant of a license, not a transfer of title, and under this license you may not:
-                </p>
-                <ul className="list-disc list-inside space-y-1 mb-4">
-                  <li>Modify or copy the materials</li>
-                  <li>Use the materials for any commercial purpose or for any public display</li>
-                  <li>Attempt to reverse engineer any software contained on the website</li>
-                  <li>Remove any copyright or other proprietary notations from the materials</li>
-                  <li>Transfer the materials to another person or "mirror" the materials on any other server</li>
-                </ul>
-                <p>
-                  This license shall automatically terminate if you violate any of these restrictions and may be terminated by Sleep Calculator at any time.
-                </p>
-              </section>
+              <p className="text-gray-300 mb-4">
+                Your access to and use of the Service is conditioned on your acceptance of and compliance with these Terms. These Terms apply to all visitors, users, and others who access or use the Service.
+              </p>
               
-              <section>
-                <h2 className="text-xl font-semibold mb-3 text-white">3. Disclaimer</h2>
-                <p className="mb-4">
-                  The materials on Sleep Calculator's website are provided "as is". Sleep Calculator makes no warranties, expressed or implied, and hereby disclaims and negates all other warranties, including without limitation, implied warranties or conditions of merchantability, fitness for a particular purpose, or non-infringement of intellectual property or other violation of rights.
-                </p>
-                <p>
-                  Furthermore, Sleep Calculator does not warrant or make any representations concerning the accuracy, likely results, or reliability of the use of the materials on its website or otherwise relating to such materials or on any sites linked to this site.
-                </p>
-              </section>
+              <p className="text-gray-300 mb-4">
+                By accessing or using the Service, you agree to be bound by these Terms. If you disagree with any part of the terms, then you may not access the Service.
+              </p>
               
-              <section>
-                <h2 className="text-xl font-semibold mb-3 text-white">4. Limitations</h2>
-                <p>
-                  In no event shall Sleep Calculator or its suppliers be liable for any damages (including, without limitation, damages for loss of data or profit, or due to business interruption) arising out of the use or inability to use the materials on Sleep Calculator's website, even if Sleep Calculator or a Sleep Calculator authorized representative has been notified orally or in writing of the possibility of such damage.
-                </p>
-              </section>
+              <h2 className="text-xl font-semibold mt-6 mb-3 text-white">Use of the Service</h2>
+              <p className="text-gray-300 mb-4">
+                The Service is designed to provide informational content about sleep patterns, sleep cycles, and sleep hygiene. The sleep cycle calculations and recommendations provided by the Service are based on general sleep science research and are intended for informational purposes only.
+              </p>
               
-              <section>
-                <h2 className="text-xl font-semibold mb-3 text-white">5. Accuracy of Materials</h2>
-                <p>
-                  The materials appearing on Sleep Calculator's website could include technical, typographical, or photographic errors. Sleep Calculator does not warrant that any of the materials on its website are accurate, complete, or current. Sleep Calculator may make changes to the materials contained on its website at any time without notice.
-                </p>
-              </section>
+              <p className="text-gray-300 mb-4">
+                You are responsible for your use of the Service and for any consequences thereof. You may use the Service only in compliance with these Terms and all applicable local, state, national, and international laws, rules, and regulations.
+              </p>
               
-              <section>
-                <h2 className="text-xl font-semibold mb-3 text-white">6. Links</h2>
-                <p>
-                  Sleep Calculator has not reviewed all of the sites linked to its website and is not responsible for the contents of any such linked site. The inclusion of any link does not imply endorsement by Sleep Calculator of the site. Use of any such linked website is at the user's own risk.
-                </p>
-              </section>
+              <h2 className="text-xl font-semibold mt-6 mb-3 text-white">Intellectual Property</h2>
+              <p className="text-gray-300 mb-4">
+                The Service and its original content, features, and functionality are and will remain the exclusive property of Sleep Calculator and its licensors. The Service is protected by copyright, trademark, and other laws of both the United States and foreign countries. Our trademarks and trade dress may not be used in connection with any product or service without the prior written consent of Sleep Calculator.
+              </p>
               
-              <section>
-                <h2 className="text-xl font-semibold mb-3 text-white">7. Modifications</h2>
-                <p>
-                  Sleep Calculator may revise these terms of service for its website at any time without notice. By using this website, you are agreeing to be bound by the then current version of these terms of service.
-                </p>
-              </section>
+              <h2 className="text-xl font-semibold mt-6 mb-3 text-white">Medical Disclaimer</h2>
+              <p className="text-gray-300 mb-4">
+                The content provided on the Service is for informational and educational purposes only and is not intended to be a substitute for professional medical advice, diagnosis, or treatment. Always seek the advice of your physician or other qualified health provider with any questions you may have regarding a medical condition.
+              </p>
               
-              <section>
-                <h2 className="text-xl font-semibold mb-3 text-white">8. Governing Law</h2>
-                <p>
-                  These terms and conditions are governed by and construed in accordance with the laws and any dispute relating to these terms and conditions shall be subject to the exclusive jurisdiction of the courts.
-                </p>
-              </section>
+              <p className="text-gray-300 mb-4">
+                Never disregard professional medical advice or delay in seeking it because of something you have read on the Service. If you think you may have a medical emergency, call your doctor or 911 immediately.
+              </p>
               
-              <section>
-                <h2 className="text-xl font-semibold mb-3 text-white">9. Medical Disclaimer</h2>
-                <p>
-                  The information provided by Sleep Calculator is for informational purposes only and is not intended as a substitute for advice from your physician or other healthcare professional. You should not use the information on this website for diagnosing or treating a health problem or disease. Always consult with a qualified healthcare professional before making any changes to your sleep routine, especially if you have an existing medical condition.
-                </p>
-              </section>
+              <h2 className="text-xl font-semibold mt-6 mb-3 text-white">Links to Other Websites</h2>
+              <p className="text-gray-300 mb-4">
+                Our Service may contain links to third-party websites or services that are not owned or controlled by Sleep Calculator.
+              </p>
+              
+              <p className="text-gray-300 mb-4">
+                Sleep Calculator has no control over and assumes no responsibility for the content, privacy policies, or practices of any third-party websites or services. You further acknowledge and agree that Sleep Calculator shall not be responsible or liable, directly or indirectly, for any damage or loss caused or alleged to be caused by or in connection with the use of or reliance on any such content, goods, or services available on or through any such websites or services.
+              </p>
+              
+              <p className="text-gray-300 mb-4">
+                We strongly advise you to read the terms and conditions and privacy policies of any third-party websites or services that you visit.
+              </p>
+              
+              <h2 className="text-xl font-semibold mt-6 mb-3 text-white">Limitation of Liability</h2>
+              <p className="text-gray-300 mb-4">
+                In no event shall Sleep Calculator, nor its directors, employees, partners, agents, suppliers, or affiliates, be liable for any indirect, incidental, special, consequential, or punitive damages, including without limitation, loss of profits, data, use, goodwill, or other intangible losses, resulting from (i) your access to or use of or inability to access or use the Service; (ii) any conduct or content of any third party on the Service; (iii) any content obtained from the Service; and (iv) unauthorized access, use, or alteration of your transmissions or content, whether based on warranty, contract, tort (including negligence), or any other legal theory, whether or not we have been informed of the possibility of such damage.
+              </p>
+              
+              <h2 className="text-xl font-semibold mt-6 mb-3 text-white">Indemnification</h2>
+              <p className="text-gray-300 mb-4">
+                You agree to defend, indemnify, and hold harmless Sleep Calculator and its licensees and licensors, and their employees, contractors, agents, officers, and directors, from and against any and all claims, damages, obligations, losses, liabilities, costs or debt, and expenses (including but not limited to attorney's fees), resulting from or arising out of a) your use and access of the Service, by you or any person using your account and password; b) a breach of these Terms; or c) content posted on the Service.
+              </p>
+              
+              <h2 className="text-xl font-semibold mt-6 mb-3 text-white">Changes</h2>
+              <p className="text-gray-300 mb-4">
+                We reserve the right, at our sole discretion, to modify or replace these Terms at any time. If a revision is material, we will try to provide at least 30 days' notice prior to any new terms taking effect. What constitutes a material change will be determined at our sole discretion.
+              </p>
+              
+              <p className="text-gray-300 mb-4">
+                By continuing to access or use our Service after those revisions become effective, you agree to be bound by the revised terms. If you do not agree to the new terms, please stop using the Service.
+              </p>
+              
+              <h2 className="text-xl font-semibold mt-6 mb-3 text-white">Governing Law</h2>
+              <p className="text-gray-300 mb-4">
+                These Terms shall be governed and construed in accordance with the laws of the United States, without regard to its conflict of law provisions.
+              </p>
+              
+              <p className="text-gray-300 mb-4">
+                Our failure to enforce any right or provision of these Terms will not be considered a waiver of those rights. If any provision of these Terms is held to be invalid or unenforceable by a court, the remaining provisions of these Terms will remain in effect.
+              </p>
+              
+              <h2 className="text-xl font-semibold mt-6 mb-3 text-white">Contact Us</h2>
+              <p className="text-gray-300 mb-4">
+                If you have any questions about these Terms, please contact us using our <Link href="/contact" className="text-primary-400 hover:underline">contact form</Link>.
+              </p>
+            </div>
+            
+            <div className="mt-8 p-6 bg-dark-800/50 rounded-lg border border-dark-700">
+              <h3 className="text-lg font-semibold mb-4 text-primary-400">Related Documents</h3>
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <Link href="/privacy-policy" className="flex items-center p-3 bg-dark-700/50 rounded-lg hover:bg-dark-700 transition-colors">
+                  <div className="bg-primary-900/30 p-2 rounded-full mr-3">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="text-primary-400">
+                      <rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect>
+                      <path d="M7 11V7a5 5 0 0 1 10 0v4"></path>
+                    </svg>
+                  </div>
+                  <span>Privacy Policy</span>
+                </Link>
+                <Link href="/cookie-policy" className="flex items-center p-3 bg-dark-700/50 rounded-lg hover:bg-dark-700 transition-colors">
+                  <div className="bg-primary-900/30 p-2 rounded-full mr-3">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="text-primary-400">
+                      <circle cx="12" cy="8" r="7"></circle>
+                      <polyline points="8.21 13.89 7 23 12 20 17 23 15.79 13.88"></polyline>
+                    </svg>
+                  </div>
+                  <span>Cookie Policy</span>
+                </Link>
+              </div>
             </div>
           </motion.div>
           
-          {/* Sidebar with ad */}
-          <div className="md:w-1/4">
-            <div className="sticky top-24">
-              <div className="flex justify-center mb-6">
-                <AdPlaceholder width={300} height={250} />
-              </div>
-            </div>
+          <div className="text-center mb-8">
+            <Link href="/contact" className="inline-block btn-primary">Contact Us</Link>
+            <p className="text-sm text-gray-400 mt-2">Have questions about our terms? We're here to help.</p>
           </div>
-        </div>
-        
-        {/* Ad banner at bottom */}
-        <div className="flex justify-center mt-8">
-          <AdPlaceholder width={728} height={90} className="hidden md:flex" />
-          <AdPlaceholder width={320} height={100} className="flex md:hidden" />
         </div>
       </main>
       

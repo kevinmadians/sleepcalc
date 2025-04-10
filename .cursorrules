@@ -109,6 +109,12 @@ If needed, you can further use the `web_scraper.py` file to scrape the web page 
 - To diagnose Next.js routing issues in Windows environments, use `dir src\app\path-name` to check if the directory and page.tsx file exist in the correct location.
 - For theming with Tailwind CSS, use conditional class variants like `.dark .class-name` and `body:not(.dark) .class-name` to define different styles based on the current theme.
 - For UI design, it's better to stick with a single theme (like dark mode) if multi-theme support isn't necessary, as it simplifies CSS and prevents potential styling issues.
+- To prevent hydration errors caused by browser extensions like Grammarly that modify the DOM, add `suppressHydrationWarning={true}` to the body element in the layout file.
+- When using Next.js App Router, avoid setting document.title directly in client components as it will override the metadata titles on page refresh. Instead, rely on the metadata export in each page to set the title, which Next.js will maintain across refreshes.
+- When encountering "ENOENT: no such file or directory, open '/.next/server/pages/_document.js'" errors in Next.js, clean the build cache by removing the .next directory and reinstalling dependencies. Also check for missing component references that might be causing build failures.
+- For consistent branding across pages in Next.js applications, use a combination of metadata exports in server components and client-side document.title setting in useEffect hooks for client components.
+- Use consistent page title format (e.g., "Page Name - Website Name | Tagline") across all pages for better SEO and user experience.
+- For SEO optimization in Next.js, make sure OpenGraph and Twitter card metadata is properly configured in each page's metadata.ts file with appropriate titles, descriptions, and image URLs.
 
 # Scratchpad
 
@@ -142,31 +148,68 @@ Developing a modern web application that replicates SleepCalculator.com with enh
   [X] Update navigation to link between all pages
 [X] Fix nap calculator navigation and add theme-based background styles
 [X] Revert to dark-only theme (removed light theme support)
-[ ] Optimize performance
+[X] Code cleanup and optimization
+  [X] Remove ThemeContext and theme-related code
+  [X] Remove debug and test pages
+  [X] Clean up unused imports and code
+  [X] Remove empty directories and testing pages
+  [X] Fix component import paths and refactor duplicate code
+[X] Fix build-time errors
+  [X] Restore napCalculator.ts constants file that was accidentally deleted
+  [X] Remove duplicate napCalculator.tsx file with JSX that causes compilation errors
+  [X] Verify successful production build
+[X] Remove AdSense placeholder components
+  [X] Remove AdPlaceholder component file
+  [X] Clean up AdPlaceholder references in pages
+  [X] Preserve rich UI features while removing ad placeholders
+[X] Implement SEO optimization
+  [X] Update metadata files for all pages with appropriate titles and descriptions
+  [X] Configure OpenGraph and Twitter card metadata for social sharing
+  [X] Add JSON-LD structured data for rich search results
+  [X] Fix document.title handling in client components
+  [X] Standardize branding across all pages (Sleep Calculator - Calculate Your Ideal Sleep & Wake Times)
+  [X] Verify build process with SEO improvements
 [ ] Deploy to Vercel
 
 ### Current Progress
-Completed the implementation of the Sleep Calculator app with a multi-page structure:
-- Created a home page that serves as the entry point for the sleep calculator, where users select whether they want to calculate bedtime or wake-up time
-- Implemented a sleep results page that shows the calculation results based on user input
-- Created a dedicated nap calculator page with different nap duration options
-- Added a sleep tips page featuring expandable tips and sleep science information
-- Updated the navigation menu to provide access to all pages
-- Ensured consistent styling and animations across all pages
-- Applied responsive design principles throughout the application
-- Used client-side routing for smooth navigation between pages
-- Properly handled hydration issues
-- Fixed nap calculator navigation by ensuring proper page structure
-- Created a not-found page for handling 404 errors
-- Simplified the application to use only dark theme by:
-  - Removing ThemeProvider and context
-  - Removing theme toggle button from navbar
-  - Simplifying CSS to only include dark theme styles
-  - Removing darkMode setting from tailwind.config.js
+Completed implementation of the Sleep Calculator app with a multi-page structure and SEO optimizations:
+
+- Created a comprehensive multi-page application structure with:
+  - Home page with sleep calculator entry point
+  - Sleep results page with calculation output
+  - Nap calculator page with different duration options
+  - Sleep tips page with expandable tips and sleep science information
+  - Sleep debt calculator
+  - Chronotype analyzer
+  - Sleep assessment tool
+  - Supporting pages (About, Contact, Privacy Policy, Terms of Use, etc.)
+
+- Implemented consistent UI/UX with:
+  - Modern design with dark theme
+  - Responsive layouts for all devices
+  - Smooth animations using Framer Motion
+  - Intuitive navigation between pages
+  - Custom time picker component
+
+- Added SEO optimizations:
+  - Standardized website name to "Sleep Calculator" across all pages
+  - Implemented consistent tagline: "Calculate Your Ideal Sleep & Wake Times"
+  - Updated all metadata.ts files with appropriate titles, descriptions, and keywords
+  - Configured OpenGraph and Twitter card metadata for better social sharing
+  - Added JSON-LD structured data for rich search results
+  - Fixed document.title handling in client components
+  - Verified SEO setup with successful build process
+
+- Prepared for deployment:
+  - Verified Vercel configuration in vercel.json
+  - Confirmed environment variables in .env
+  - Tested build process - successful with no errors
+  - Updated documentation for deployment process
+  - Cleaned up codebase for production release
 
 ### Next Steps
-1. Implement responsive design improvements
-2. Add SEO optimization
-3. Accessibility improvements
-4. Final testing and bug fixes
-5. Prepare for deployment to Vercel
+1. Final code review and testing
+2. Deploy to Vercel
+3. Implement analytics tracking
+4. Set up continuous integration/deployment
+5. Post-launch monitoring and optimization

@@ -3,11 +3,11 @@
 import { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import dynamic from 'next/dynamic';
-import Footer from '@/components/Footer';
-import AdPlaceholder from '@/components/AdPlaceholder';
+import Footer from '@/components/layout/Footer';
+
 
 // Dynamically import Navbar with no SSR to avoid hydration issues
-const Navbar = dynamic(() => import('@/components/Navbar'), { ssr: false });
+const Navbar = dynamic(() => import('@/components/layout/Navbar'), { ssr: false });
 
 // JSON-LD schema for SEO
 const aboutSchema = {
@@ -28,6 +28,11 @@ export default function AboutPage() {
   // Handle client-side mounting
   useEffect(() => {
     setMounted(true);
+    
+    // Force set the document title directly
+    if (typeof window !== 'undefined') {
+      document.title = "About - Sleep Calculator";
+    }
   }, []);
   
   return (
@@ -59,17 +64,6 @@ export default function AboutPage() {
           >
             Learn how our sleep calculator works with your natural sleep cycles
           </motion.p>
-          
-          {/* 728x90 Ad Banner */}
-          <motion.div
-            className="w-full flex justify-center my-6"
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ delay: 0.4, duration: 0.5 }}
-          >
-            <AdPlaceholder width={728} height={90} className="hidden md:flex" />
-            <AdPlaceholder width={320} height={100} className="flex md:hidden" />
-          </motion.div>
           
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
             <motion.div
@@ -198,12 +192,12 @@ export default function AboutPage() {
               animate={{ opacity: 1 }}
               transition={{ delay: 0.6, duration: 0.5 }}
             >
-              {/* 300x250 Ad in Sidebar */}
-              <div className="flex justify-center mb-6">
-                <AdPlaceholder width={300} height={250} />
-              </div>
-              
-              <div className="glass-card p-6">
+              <motion.div 
+                className="glass-card p-6"
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.6, duration: 0.5 }}
+              >
                 <h3 className="text-lg font-semibold mb-4 flex items-center">
                   <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6 text-primary-400 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8.228 9c.549-1.165 2.03-2 3.772-2 2.21 0 4 1.343 4 3 0 1.4-1.278 2.575-3.006 2.907-.542.104-.994.54-.994 1.093m0 3h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
@@ -231,9 +225,14 @@ export default function AboutPage() {
                     <span>Boost overall mood and well-being</span>
                   </li>
                 </ul>
-              </div>
+              </motion.div>
               
-              <div className="glass-card p-6">
+              <motion.div 
+                className="glass-card p-6"
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.6, duration: 0.5 }}
+              >
                 <h3 className="text-lg font-semibold mb-4 flex items-center">
                   <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6 text-primary-400 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-6 9l2 2 4-4" />
@@ -261,7 +260,7 @@ export default function AboutPage() {
                     <p className="text-xs text-gray-400">Limit screen time 1-2 hours before bed</p>
                   </div>
                 </div>
-              </div>
+              </motion.div>
             </motion.div>
           </div>
         </main>

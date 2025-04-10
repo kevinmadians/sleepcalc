@@ -15,6 +15,8 @@ export default function Navbar() {
   
   // Prevent scrolling when mobile menu is open
   useEffect(() => {
+    if (typeof window === 'undefined') return;
+    
     if (mobileMenuOpen) {
       document.body.style.overflow = 'hidden';
     } else {
@@ -22,7 +24,9 @@ export default function Navbar() {
     }
     
     return () => {
-      document.body.style.overflow = 'auto';
+      if (typeof window !== 'undefined') {
+        document.body.style.overflow = 'auto';
+      }
     };
   }, [mobileMenuOpen]);
   

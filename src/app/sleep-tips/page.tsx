@@ -1,22 +1,46 @@
 "use client";
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import dynamic from 'next/dynamic';
-import Footer from '@/components/Footer';
-import AdPlaceholder from '@/components/AdPlaceholder';
+import Footer from '@/components/layout/Footer';
+import Link from 'next/link';
+
+import { sleepCalculatorFAQs, createFAQSchema } from '@/utils/faqSchema';
 
 // Dynamically import Navbar with no SSR to avoid hydration issues
-const Navbar = dynamic(() => import('@/components/Navbar'), { ssr: false });
+const Navbar = dynamic(() => import('@/components/layout/Navbar'), { ssr: false });
 
 // JSON-LD schema for SEO
 const sleepTipsSchema = {
   "@context": "https://schema.org",
-  "@type": "WebPage",
-  "name": "Sleep Tips - Sleep Calculator",
-  "description": "Improve your sleep quality with science-backed sleep tips and advice. Learn about sleep disorders, environment optimization, and sleep habits.",
-  "keywords": "sleep tips, how to sleep better, sleep improvement, sleep quality tips, sleep disorders, insomnia tips, sleep environment, sleep habits, bedtime routine, sleep science, sleep schedule tips, deep sleep tips, REM sleep improvement, sleep hygiene, better sleep quality, falling asleep tips, sleeping disorders"
+  "@type": "Article",
+  "headline": "Comprehensive Guide to Better Sleep: Tips & Techniques",
+  "description": "Discover evidence-based sleep tips and techniques to improve your sleep quality. Learn about sleep hygiene, circadian rhythms, and strategies for deeper, more restorative sleep.",
+  "image": "https://sleepcalc.net/images/sleep-tips-og.jpg",
+  "author": {
+    "@type": "Organization",
+    "name": "Sleep Calculator",
+    "url": "https://sleepcalc.net"
+  },
+  "publisher": {
+    "@type": "Organization",
+    "name": "Sleep Calculator",
+    "logo": {
+      "@type": "ImageObject",
+      "url": "https://sleepcalc.net/logo.png"
+    }
+  },
+  "datePublished": "2023-12-15T00:00:00.000Z",
+  "dateModified": "2024-05-01T00:00:00.000Z",
+  "mainEntityOfPage": {
+    "@type": "WebPage",
+    "@id": "https://sleepcalc.net/sleep-tips"
+  }
 };
+
+// Create FAQ schema
+const faqSchema = createFAQSchema(sleepCalculatorFAQs);
 
 // Define sleep tip categories and their detailed information
 const sleepTips = [
@@ -160,6 +184,17 @@ export default function SleepTipsPage() {
   const [expandedDisorderIndex, setExpandedDisorderIndex] = useState<number | null>(null);
   const [quizAnswers, setQuizAnswers] = useState<{[key: number]: number}>({});
   const [quizSubmitted, setQuizSubmitted] = useState(false);
+  const [mounted, setMounted] = useState(false);
+  
+  // Handle client-side mounting
+  useEffect(() => {
+    setMounted(true);
+    
+    // Force set the document title directly
+    if (typeof window !== 'undefined') {
+      document.title = "Sleep Tips - Sleep Calculator";
+    }
+  }, []);
   
   // Sleep quality self-assessment quiz questions
   const quizQuestions = [
@@ -217,7 +252,7 @@ export default function SleepTipsPage() {
   const sleepQualityResult = quizSubmitted ? calculateSleepQualityScore() : null;
   
   return (
-    <main className="flex min-h-screen flex-col">
+    <main className="min-h-screen flex flex-col bg-dark-950">
       <Navbar />
       
       {/* JSON-LD structured data */}
@@ -225,133 +260,122 @@ export default function SleepTipsPage() {
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(sleepTipsSchema) }}
       />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema) }}
+      />
       
-      <motion.div 
-        className="flex flex-col items-center px-4 py-12 md:py-16 flex-grow"
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        transition={{ duration: 0.5 }}
-      >
-        <motion.h1 
-          className="text-4xl md:text-5xl font-bold mb-4 text-center"
-          initial={{ y: -20, opacity: 0 }}
-          animate={{ y: 0, opacity: 1 }}
-          transition={{ delay: 0.2, duration: 0.5 }}
-        >
-          Sleep <span className="text-primary-400">Tips</span>
-        </motion.h1>
-        
-        <motion.p 
-          className="text-lg text-gray-300 text-center max-w-2xl mb-6"
-          initial={{ y: -10, opacity: 0 }}
-          animate={{ y: 0, opacity: 1 }}
-          transition={{ delay: 0.3, duration: 0.5 }}
-        >
-          Improve your sleep quality with these science-backed recommendations
-        </motion.p>
-        
-        {/* 728x90 Ad Banner */}
+      <div className="container mx-auto px-4 py-8 md:py-12">
         <motion.div
-          className="w-full flex justify-center my-6 max-w-4xl"
+          className="text-center mb-8"
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
-          transition={{ delay: 0.4, duration: 0.5 }}
+          transition={{ duration: 0.5 }}
         >
-          <AdPlaceholder width={728} height={90} className="hidden md:flex" />
-          <AdPlaceholder width={320} height={100} className="flex md:hidden" />
+          <motion.h1 
+            className="text-4xl md:text-5xl font-bold mb-4"
+            initial={{ y: -20, opacity: 0 }}
+            animate={{ y: 0, opacity: 1 }}
+            transition={{ delay: 0.2, duration: 0.5 }}
+          >
+            <span className="text-primary-400">Sleep</span> Tips
+          </motion.h1>
+          
+          <p className="text-lg text-gray-300 max-w-2xl mx-auto">
+            Improve your sleep quality with these science-backed recommendations
+          </p>
         </motion.div>
         
-        {/* Sleep tips section */}
-        <div className="w-full max-w-6xl flex flex-col md:flex-row gap-8">
-          <motion.div
-            className="w-full md:w-2/3 mb-8 md:mb-0"
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ delay: 0.4, duration: 0.5 }}
-          >
-            <div className="flex flex-wrap justify-center gap-2 mb-6">
-              {sleepTips.map((category, index) => (
-                <motion.button
-                  key={category.category}
-                  className={`px-4 py-2 rounded-full text-sm font-medium transition-colors ${
-                    activeCategory === category.category
-                      ? 'bg-primary-600 text-white'
-                      : 'bg-dark-700 text-gray-300 hover:bg-dark-600'
-                  }`}
-                  onClick={() => setActiveCategory(category.category)}
-                  whileHover={{ scale: 1.05 }}
-                  whileTap={{ scale: 0.95 }}
-                  initial={{ opacity: 0, y: 10 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ delay: 0.4 + (index * 0.1), duration: 0.3 }}
-                >
-                  {category.category}
-                </motion.button>
-              ))}
-            </div>
-            
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-              {sleepTips
-                .find(category => category.category === activeCategory)?.tips
-                .map((tip, index) => (
-                  <motion.div
-                    key={index}
-                    className="glass-card p-6 border-2 border-primary-400 rounded-xl"
-                    initial={{ opacity: 0, scale: 0.95 }}
-                    animate={{ opacity: 1, scale: 1 }}
-                    transition={{ delay: 0.2 + (index * 0.1), duration: 0.3 }}
-                    whileHover={{ y: -5 }}
-                  >
-                    <div className="flex items-start mb-3">
-                      <span className="text-2xl mr-3">{tip.icon}</span>
-                      <h3 className="text-lg font-semibold">{tip.title}</h3>
-                    </div>
-                    <p className="text-gray-300 text-sm">{tip.description}</p>
-                  </motion.div>
-                ))}
-            </div>
-          </motion.div>
-          
-          {/* Sidebar with Ad */}
-          <motion.div
-            className="w-full md:w-1/3 space-y-6"
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ delay: 0.5, duration: 0.5 }}
-          >
-            {/* 300x250 Ad in Sidebar */}
-            <div className="flex justify-center mb-6">
-              <AdPlaceholder width={300} height={250} />
-            </div>
-            
-            <div className="glass-card p-6">
-              <h3 className="text-xl font-semibold mb-4">Quick Sleep Facts</h3>
-              <ul className="space-y-3">
-                <li className="p-3 bg-dark-800/50 rounded-lg">
-                  <div className="font-medium mb-1">Sleep Cycles</div>
-                  <p className="text-sm text-gray-300">Each sleep cycle lasts around 90 minutes and consists of both REM and non-REM sleep</p>
-                </li>
-                <li className="p-3 bg-dark-800/50 rounded-lg">
-                  <div className="font-medium mb-1">Ideal Duration</div>
-                  <p className="text-sm text-gray-300">Most adults need 7-9 hours of sleep per night for optimal health</p>
-                </li>
-                <li className="p-3 bg-dark-800/50 rounded-lg">
-                  <div className="font-medium mb-1">Blue Light Impact</div>
-                  <p className="text-sm text-gray-300">Blue light from screens can suppress melatonin production by up to 80%</p>
-                </li>
-              </ul>
-            </div>
-          </motion.div>
+        {/* Category Navigation Tabs */}
+        <div className="flex justify-center mb-6 overflow-x-auto">
+          <div className="flex space-x-2 bg-dark-800/50 p-1 rounded-lg">
+            {['Sleep Environment', 'Daily Habits', 'Pre-Sleep Routine', 'Sleep Science'].map((category) => (
+              <button
+                key={category}
+                className={`py-2 px-4 rounded-md transition-all duration-200 whitespace-nowrap ${
+                  activeCategory === category ? 'bg-primary-600 text-white' : 'text-gray-300 hover:bg-dark-700/50'
+                }`}
+                onClick={() => setActiveCategory(category)}
+              >
+                {category}
+              </button>
+            ))}
+          </div>
         </div>
         
-        {/* Sleep disorder section */}
+        {/* Tips Content */}
+        <div className="max-w-4xl mx-auto">
+          {sleepTips.map((categoryData) => (
+            <AnimatePresence key={categoryData.category}>
+              {activeCategory === categoryData.category && (
+                <motion.div
+                  className="grid grid-cols-1 sm:grid-cols-2 gap-4"
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  exit={{ opacity: 0 }}
+                  transition={{ duration: 0.3 }}
+                >
+                  {categoryData.tips.map((tip, index) => (
+                    <motion.div
+                      key={index}
+                      className="glass-card p-5"
+                      initial={{ opacity: 0, y: 20 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      transition={{ delay: 0.1 * index, duration: 0.3 }}
+                      whileHover={{ y: -5 }}
+                    >
+                      <div className="flex items-start">
+                        <div className="text-2xl mr-3">{tip.icon}</div>
+                        <div>
+                          <h3 className="text-lg font-semibold mb-2">{tip.title}</h3>
+                          <p className="text-gray-300 text-sm">{tip.description}</p>
+                        </div>
+                      </div>
+                    </motion.div>
+                  ))}
+                </motion.div>
+              )}
+            </AnimatePresence>
+          ))}
+        </div>
+        
+        {/* Quick Sleep Facts */}
         <motion.div
-          className="w-full max-w-4xl mb-8"
+          className="max-w-4xl mx-auto mt-12"
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ delay: 0.5, duration: 0.5 }}
+        >
+          <h2 className="text-2xl font-bold mb-6">
+            Quick Sleep <span className="text-primary-400">Facts</span>
+          </h2>
+          
+          <div className="glass-card p-6">
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+              <div>
+                <h3 className="font-semibold mb-2">Sleep Cycles</h3>
+                <p className="text-sm text-gray-300">Each sleep cycle lasts around 90 minutes and includes light sleep, deep sleep, and REM sleep.</p>
+              </div>
+              <div>
+                <h3 className="font-semibold mb-2">Adult Duration</h3>
+                <p className="text-sm text-gray-300">Adults need 7-9 hours of sleep per night for optimal health and cognitive function.</p>
+              </div>
+              <div>
+                <h3 className="font-semibold mb-2">Blue Light Impact</h3>
+                <p className="text-sm text-gray-300">Blue light from screens can suppress melatonin production by up to 50%.</p>
+              </div>
+            </div>
+          </div>
+        </motion.div>
+        
+        {/* Common Sleep Disorders */}
+        <motion.div
+          className="max-w-4xl mx-auto mt-12"
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ delay: 0.6, duration: 0.5 }}
         >
-          <h2 className="text-2xl md:text-3xl font-bold mb-6 text-center mt-12">
+          <h2 className="text-2xl font-bold mb-6">
             Common Sleep <span className="text-primary-400">Disorders</span>
           </h2>
           
@@ -418,29 +442,18 @@ export default function SleepTipsPage() {
           </div>
         </motion.div>
         
-        {/* Second 728x90 Ad Banner */}
+        {/* Sleep Quality Self-Assessment */}
         <motion.div
-          className="w-full flex justify-center my-6 max-w-4xl"
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ delay: 0.7, duration: 0.5 }}
-        >
-          <AdPlaceholder width={728} height={90} className="hidden md:flex" />
-          <AdPlaceholder width={320} height={100} className="flex md:hidden" />
-        </motion.div>
-        
-        {/* Sleep quality self-assessment quiz */}
-        <motion.div
-          className="w-full max-w-4xl mb-16"
+          className="max-w-4xl mx-auto mt-12 mb-12"
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ delay: 0.8, duration: 0.5 }}
         >
-          <h2 className="text-2xl md:text-3xl font-bold mb-6 text-center">
+          <h2 className="text-2xl font-bold mb-6">
             Quick Sleep Quality <span className="text-primary-400">Self-Assessment</span>
           </h2>
           
-          <div className="glass-card p-6 md:p-8">
+          <div className="glass-card p-6">
             {!quizSubmitted ? (
               <>
                 <p className="text-gray-300 mb-6">
@@ -537,18 +550,18 @@ export default function SleepTipsPage() {
           </div>
         </motion.div>
         
-        {/* Sleep resource links */}
+        {/* Additional Resources */}
         <motion.div
-          className="w-full max-w-4xl"
+          className="max-w-4xl mx-auto mt-12 mb-16"
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ delay: 1.0, duration: 0.5 }}
         >
-          <h2 className="text-2xl md:text-3xl font-bold mb-6 text-center">
+          <h2 className="text-2xl font-bold mb-6">
             Additional <span className="text-primary-400">Resources</span>
           </h2>
           
-          <div className="glass-card p-6 md:p-8">
+          <div className="glass-card p-6">
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
               <a href="https://www.sleepfoundation.org/" target="_blank" rel="noopener noreferrer" className="block group">
                 <div className="p-4 rounded-lg bg-dark-800 hover:bg-dark-700 transition-colors">
@@ -580,7 +593,7 @@ export default function SleepTipsPage() {
             </div>
           </div>
         </motion.div>
-      </motion.div>
+      </div>
       
       <Footer />
     </main>

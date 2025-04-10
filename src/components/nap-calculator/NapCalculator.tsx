@@ -2,7 +2,9 @@
 
 import { useState } from 'react';
 import { motion } from 'framer-motion';
-import CustomTimePicker from './CustomTimePicker';
+import CustomTimePicker from '@/components/ui/CustomTimePicker';
+import { calculateNapTimes } from '@/utils/date/calculations';
+import { formatTimeAmPm, parseTimeString } from '@/utils/date/formatters';
 
 // Constants
 const POWER_NAP = 20; // minutes
@@ -84,20 +86,12 @@ const NapCalculator = () => {
   };
   
   const calculateWakeTime = (napDuration: number): string => {
-    const [hours, minutes] = currentTime.split(':').map(Number);
-    const currentDate = new Date();
-    currentDate.setHours(hours, minutes, 0, 0);
+    const currentDate = parseTimeString(currentTime);
     
-    // Add nap duration plus 10 minutes to fall asleep
-    const wakeTime = new Date(currentDate.getTime() + (napDuration + 10) * 60000);
+    // Calculate nap wake time with 10 minutes to fall asleep
+    const { wakeTime } = calculateNapTimes(currentDate, napDuration, 10);
     
-    // Format wake time as HH:MM AM/PM
-    const wakeHours = wakeTime.getHours();
-    const wakeMinutes = wakeTime.getMinutes();
-    const ampm = wakeHours >= 12 ? 'PM' : 'AM';
-    const displayHours = wakeHours % 12 || 12;
-    
-    return `${displayHours}:${wakeMinutes.toString().padStart(2, '0')} ${ampm}`;
+    return formatTimeAmPm(wakeTime);
   };
   
   return (

@@ -1,80 +1,137 @@
-# SleepCalc - Advanced Sleep Cycle Calculator
+# Sleep Calculator Web Application
 
-[![Next.js](https://img.shields.io/badge/Next.js-15.2.4-black?logo=next.js)](https://nextjs.org/)
-[![Tailwind CSS](https://img.shields.io/badge/Tailwind_CSS-3.3.0-38b2ac?logo=tailwind-css)](https://tailwindcss.com/)
-[![Framer Motion](https://img.shields.io/badge/Framer_Motion-12.6.2-0055FF?logo=framer)](https://www.framer.com/motion/)
-[![TypeScript](https://img.shields.io/badge/TypeScript-5.8.2-blue?logo=typescript)](https://www.typescriptlang.org/)
-[![Deployed on Vercel](https://img.shields.io/badge/Deployed_on-Vercel-black?logo=vercel)](https://sleepcalc.vercel.app)
+A modern web application built with Next.js and React that helps users calculate optimal sleep and wake-up times based on 90-minute sleep cycles.
 
-A sophisticated web application designed to help users optimize their sleep cycles. Based on the science of 90-minute sleep cycles, SleepCalc provides precise bedtime and wake-up recommendations to ensure users wake up between cycles, feeling more refreshed and energized.
+## Features
 
-## 🌟 Features
+- Sleep time calculator (bedtime or wake-up time)
+- Nap calculator for power naps and REM cycle naps
+- Sleep debt calculator
+- Chronotype analyzer
+- Sleep assessment tool
+- Comprehensive sleep tips and science
+- Mobile-responsive design with dark theme
+- Fully SEO optimized with metadata and structured data
 
-- **Intelligent Sleep Cycle Calculation**: Calculate optimal times to sleep or wake up based on 90-minute sleep cycles and 15-minute fall-asleep time
-- **Personalized Sleep Recommendations**: Receive tailored sleep recommendations based on your inputs
-- **Nap Optimizer**: Plan effective power naps with optimal durations
-- **Sleep Science Education**: Learn about sleep cycles, stages, and scientifically-backed sleep improvement tips
-- **Sleep Quality Analysis**: Get personalized feedback on your sleep patterns
-- **Cross-Device Integration**: Set alarms or add sleep schedule to your calendar
-- **Results Sharing**: Easily share or export your sleep schedule
-- **Responsive Design**: Optimized for all devices from mobile to desktop
-- **Accessibility-Focused**: Designed with accessibility in mind
-- **Dark Theme**: Eye-friendly dark mode optimized for nighttime use
+## Technology Stack
 
-## 🛠️ Technology Stack
+- **Frontend Framework**: Next.js 15 (React 19)
+- **Styling**: Tailwind CSS 3.3
+- **Animations**: Framer Motion 12
+- **State Management**: React Hooks
+- **Deployment**: Vercel
 
-- **Framework**: [Next.js 15](https://nextjs.org/) with App Router and React Server Components
-- **UI/Styling**: [Tailwind CSS](https://tailwindcss.com/) with custom theme configuration
-- **Animations**: [Framer Motion](https://www.framer.com/motion/) for fluid UI interactions
-- **Language**: [TypeScript](https://www.typescriptlang.org/) for type safety
-- **State Management**: React Hooks and Context API
-- **Deployment**: [Vercel](https://vercel.com/) for seamless hosting and CI/CD
+## Project Structure
 
-## 🔍 Project Structure
+The project follows a modular structure to ensure maintainability and scalability:
 
 ```
-sleepcalc/
-├── public/             # Static assets
-├── src/                # Source code
-│   ├── app/            # Next.js App Router pages
-│   ├── components/     # Reusable UI components
-│   └── context/        # React Context for state management
-├── .eslintrc.json      # ESLint configuration
-├── next.config.js      # Next.js configuration
-├── package.json        # Project dependencies
-├── postcss.config.js   # PostCSS configuration
-├── tailwind.config.js  # Tailwind CSS configuration
-├── tsconfig.json       # TypeScript configuration
-└── vercel.json         # Vercel deployment configuration
+src/
+├── app/                    # Next.js app router pages
+│   ├── page.tsx            # Home page
+│   ├── sleep-results/      # Sleep calculation results page
+│   ├── nap-calculator/     # Nap calculator page
+│   ├── sleep-debt/         # Sleep debt calculator page
+│   ├── chronotype-analyzer/ # Chronotype analyzer page  
+│   ├── sleep-assessment/   # Sleep assessment page
+│   ├── sleep-tips/         # Sleep tips page
+│   ├── about/              # About page
+│   ├── contact/            # Contact page
+│   ├── privacy-policy/     # Privacy policy page
+│   ├── terms-of-use/       # Terms of use page
+│   ├── cookie-policy/      # Cookie policy page
+│   ├── not-found.tsx       # 404 page
+│   └── metadata.ts         # Root metadata configuration
+│
+├── components/             # React components organized by domain
+│   ├── layout/             # Layout components (Navbar, Footer, etc.)
+│   ├── sleep-calculator/   # Sleep calculator specific components
+│   ├── nap-calculator/     # Nap calculator specific components
+│   └── ui/                 # Reusable UI components (CustomTimePicker, etc.)
+│
+├── constants/              # Application constants and configuration
+│   ├── sleepCalculator.ts  # Sleep calculator constants
+│   └── napCalculator.ts    # Nap calculator constants
+│
+└── utils/                  # Utility functions
+    ├── date/               # Date formatting and calculation utilities
+    └── faqSchema.js        # JSON-LD schema generation utilities
 ```
 
-## 🤝 Contributing
+## SEO Optimization
 
-Contributions are welcome! Please feel free to submit a Pull Request.
+The application is fully optimized for search engines with:
 
-1. Fork the project
+- Consistent branding: "Sleep Calculator - Calculate Your Ideal Sleep & Wake Times"
+- Standardized page titles and meta descriptions
+- OpenGraph and Twitter card metadata for better social sharing
+- JSON-LD structured data for rich search results
+- Metadata exports for server components
+- Client-side document.title setting for client components
+- Canonical URLs and proper indexing directives
+
+## Getting Started
+
+### Prerequisites
+
+- Node.js 18.x or later
+- npm or yarn
+
+### Installation
+
+1. Clone the repository:
+   ```
+   git clone https://github.com/yourusername/sleep-calculator.git
+   cd sleep-calculator
+   ```
+
+2. Install dependencies:
+   ```
+   npm install
+   # or
+   yarn install
+   ```
+
+3. Run the development server:
+   ```
+   npm run dev
+   # or
+   yarn dev
+   ```
+
+4. Open your browser and navigate to `http://localhost:3000`
+
+## Building for Production
+
+To build the application for production:
+
+```
+npm run build
+# or
+yarn build
+```
+
+The optimized production build will be generated in the `.next` directory.
+
+## Deployment
+
+This project is configured for easy deployment on Vercel:
+
+1. Push your code to a GitHub repository
+2. Connect your repository to Vercel
+3. Vercel will automatically detect Next.js and apply the appropriate build settings
+4. Environment variables are configured in the Vercel dashboard or through the `.env` file
+
+For more detailed instructions, see `VERCEL-DEPLOYMENT.md`.
+
+## Contributing
+
+1. Fork the repository
 2. Create your feature branch (`git checkout -b feature/amazing-feature`)
 3. Commit your changes (`git commit -m 'Add some amazing feature'`)
 4. Push to the branch (`git push origin feature/amazing-feature`)
 5. Open a Pull Request
 
-## 📚 Sleep Science
+## License
 
-SleepCalc is based on established sleep science principles:
-
-- Sleep occurs in cycles of approximately 90 minutes
-- Each cycle includes stages of light sleep, deep sleep, and REM sleep
-- Waking between cycles rather than during a cycle can lead to feeling more refreshed
-- The average person needs 5-6 complete sleep cycles (7.5-9 hours) per night
-
-## 📄 License
-
-This project is licensed under the ISC License - see the LICENSE file for details.
-
-## 📬 Contact
-
-Have questions or suggestions? Please open an issue on this repository.
-
----
-
-Built with ❤️ by Kevin M.S
+This project is licensed under the MIT License - see the LICENSE file for details.

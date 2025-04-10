@@ -1,13 +1,14 @@
 "use client";
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import dynamic from 'next/dynamic';
-import Footer from '@/components/Footer';
-import AdPlaceholder from '@/components/AdPlaceholder';
+import Footer from '@/components/layout/Footer';
+import Link from 'next/link';
+
 
 // Dynamically import Navbar with no SSR to avoid hydration issues
-const Navbar = dynamic(() => import('@/components/Navbar'), { ssr: false });
+const Navbar = dynamic(() => import('@/components/layout/Navbar'), { ssr: false });
 
 // Chronotype Descriptions
 const chronotypes = {
@@ -91,6 +92,75 @@ const chronotypes = {
       "Use relaxation techniques before bed to calm an active mind"
     ]
   }
+};
+
+// Add helper functions for compatibility reasons
+const getCompatibilityReason = (type1: string, type2: string): string => {
+  const pairings: Record<string, Record<string, string>> = {
+    lion: {
+      bear: "Your early-morning energy complements their mid-day focus",
+      dolphin: "Both tend to wake early and have similar energy patterns",
+      wolf: "Your schedules are opposite, which can be challenging"
+    },
+    bear: {
+      lion: "Their early energy pairs well with your mid-day productivity",
+      bear: "Matching schedules make coordination easy",
+      wolf: "Your evening wind-down overlaps with their productivity peak",
+      dolphin: "Your steady energy can help balance their irregular patterns"
+    },
+    wolf: {
+      bear: "Their adaptability works well with your evening preferences",
+      wolf: "Similar schedules make coordination easy",
+      lion: "Your sleep-wake preferences are opposite",
+      dolphin: "Both can struggle with conventional schedules"
+    },
+    dolphin: {
+      lion: "Their consistency helps balance your sleep variability",
+      bear: "Their adaptability complements your irregular patterns",
+      wolf: "Both have non-conventional sleep needs which can clash",
+      dolphin: "Both have inconsistent sleep patterns which can amplify issues"
+    }
+  };
+  
+  return pairings[type1]?.[type2] || "Compatible energy patterns";
+};
+
+const getIncompatibilityReason = (type1: string, type2: string): string => {
+  const pairings: Record<string, Record<string, string>> = {
+    lion: {
+      wolf: "Your early schedule conflicts with their late-night energy",
+      dolphin: "Their irregular sleep can clash with your consistent patterns"
+    },
+    bear: {
+      lion: "Their very early schedule may not align with your mid-day focus",
+      wolf: "Their late night preference can be at odds with your schedule",
+      dolphin: "Their sleep irregularity may disrupt your consistent rhythm"
+    },
+    wolf: {
+      lion: "Their early morning energy conflicts with your night owl tendencies",
+      bear: "Their mid-day peak might not align with your evening productivity",
+      dolphin: "Their unpredictable sleep patterns add complexity"
+    },
+    dolphin: {
+      lion: "Their rigid schedule may not accommodate your flexibility needs",
+      bear: "Their consistent patterns may not adapt to your irregularity",
+      wolf: "Both have sleep challenges that may compound each other"
+    }
+  };
+  
+  return pairings[type1]?.[type2] || "Potential schedule conflicts";
+};
+
+// Function to get emoji for chronotype
+const getEmojiForChronotype = (type: string): string => {
+  const emojis: Record<string, string> = {
+    lion: "🦁",
+    bear: "🐻",
+    wolf: "🐺",
+    dolphin: "🐬"
+  };
+  
+  return emojis[type] || "🕓";
 };
 
 // Questions for the chronotype assessment
@@ -413,7 +483,7 @@ export default function ChronotypeAnalyzerContent() {
                   <>
                     <div className="text-center mb-8">
                       <div className="text-6xl mb-4">
-                        {chronotypes[results.topChronotype as keyof typeof chronotypes].icon}
+                        {getEmojiForChronotype(results.topChronotype)}
                       </div>
                       <h2 className={`text-2xl md:text-3xl font-bold mb-3 ${chronotypes[results.topChronotype as keyof typeof chronotypes].color}`}>
                         Your Chronotype: {chronotypes[results.topChronotype as keyof typeof chronotypes].name}
@@ -497,7 +567,7 @@ export default function ChronotypeAnalyzerContent() {
                               <div className="flex flex-wrap gap-3">
                                 {chronotypeCompatibility[results.topChronotype].compatible.map((type) => (
                                   <div key={type} className="flex items-center bg-dark-700/50 p-2 rounded-lg">
-                                    <span className="text-xl mr-2">{chronotypes[type as keyof typeof chronotypes].icon}</span>
+                                    <span className="text-xl mr-2">{getEmojiForChronotype(type)}</span>
                                     <span>{chronotypes[type as keyof typeof chronotypes].name}</span>
                                   </div>
                                 ))}
@@ -511,7 +581,7 @@ export default function ChronotypeAnalyzerContent() {
                               <div className="flex flex-wrap gap-3">
                                 {chronotypeCompatibility[results.topChronotype].challenging.map((type) => (
                                   <div key={type} className="flex items-center bg-dark-700/50 p-2 rounded-lg">
-                                    <span className="text-xl mr-2">{chronotypes[type as keyof typeof chronotypes].icon}</span>
+                                    <span className="text-xl mr-2">{getEmojiForChronotype(type)}</span>
                                     <span>{chronotypes[type as keyof typeof chronotypes].name}</span>
                                   </div>
                                 ))}
@@ -772,17 +842,6 @@ export default function ChronotypeAnalyzerContent() {
               Note: This assessment provides general guidance based on chronotype research. Individual variation exists, and environmental factors can also influence your optimal sleep-wake patterns.
             </p>
           </div>
-          
-          {/* Ad Banner */}
-          <motion.div
-            className="w-full flex justify-center mb-8"
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ delay: 0.4, duration: 0.5 }}
-          >
-            <AdPlaceholder width={728} height={90} className="hidden md:flex" />
-            <AdPlaceholder width={320} height={100} className="flex md:hidden" />
-          </motion.div>
         </motion.div>
       </main>
       

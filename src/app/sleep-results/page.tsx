@@ -4,74 +4,14 @@ import { useState, useEffect, Suspense, useCallback } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import dynamic from 'next/dynamic';
 import { useRouter, useSearchParams } from 'next/navigation';
-import Footer from '@/components/Footer';
-import AdPlaceholder from '@/components/AdPlaceholder';
+import Footer from '@/components/layout/Footer';
+
+import { SLEEP_CYCLE_DURATION, FALLING_ASLEEP_TIME, RECOMMENDED_CYCLES, sleepCycleStages, sleepHealthBenefits } from '@/constants/sleepCalculator';
+import { formatTimeAmPm, parseTimeString } from '@/utils/date/formatters';
+import { calculateBedtimes, calculateWakeUpTimes } from '@/utils/date/calculations';
 
 // Dynamically import Navbar with no SSR to avoid hydration issues
-const Navbar = dynamic(() => import('@/components/Navbar'), { ssr: false });
-
-// Constants
-const SLEEP_CYCLE_DURATION = 90; // minutes
-const FALLING_ASLEEP_TIME = 15; // minutes
-const RECOMMENDED_CYCLES = [5, 6]; // 5 or 6 cycles is recommended (7.5-9 hours)
-
-// Sleep cycle stages information
-const sleepCycleStages = [
-  {
-    name: "NREM Stage 1",
-    duration: "1-5 minutes",
-    description: "Light sleep, easily awakened, muscles relax, may experience sudden muscle jerks",
-  },
-  {
-    name: "NREM Stage 2",
-    duration: "10-25 minutes",
-    description: "Body temperature drops, heart rate slows, brain prepares for deep sleep",
-  },
-  {
-    name: "NREM Stage 3",
-    duration: "20-40 minutes",
-    description: "Deep sleep, difficult to wake, body repairs tissues, builds bone and muscle, strengthens immune system",
-  },
-  {
-    name: "REM Sleep",
-    duration: "10-60 minutes",
-    description: "Brain is active, vivid dreams occur, body is paralyzed, crucial for cognitive functions and memory consolidation",
-  },
-];
-
-// Sleep health benefits
-const sleepHealthBenefits = [
-  {
-    title: "Improves Memory",
-    description: "During sleep, your brain processes and consolidates memories from the day.",
-    icon: "🧠"
-  },
-  {
-    title: "Enhances Mood",
-    description: "Quality sleep helps regulate emotions and reduce anxiety and irritability.",
-    icon: "😊"
-  },
-  {
-    title: "Boosts Immunity",
-    description: "Your immune system produces protective cytokines and antibodies during sleep.",
-    icon: "🛡️"
-  },
-  {
-    title: "Helps Weight Management",
-    description: "Poor sleep disrupts hormones that regulate hunger, potentially leading to weight gain.",
-    icon: "⚖️"
-  },
-  {
-    title: "Improves Physical Performance",
-    description: "Sleep enhances athletic performance, coordination, and reaction time.",
-    icon: "💪"
-  },
-  {
-    title: "Reduces Stress",
-    description: "Quality sleep helps lower stress hormones and manage blood pressure.",
-    icon: "🧘"
-  }
-];
+const Navbar = dynamic(() => import('@/components/layout/Navbar'), { ssr: false });
 
 // JSON-LD schema for SEO
 const sleepResultsSchema = {
@@ -104,31 +44,15 @@ function SleepResultsContent() {
   
   // Define functions with useCallback to avoid dependency cycles
   const calculateSleepTimes = useCallback(() => {
-    const [hours, minutes] = time.split(':').map(Number);
-    const baseTime = new Date();
-    baseTime.setHours(hours, minutes, 0, 0);
-    
-    const calculatedTimes: Date[] = [];
+    const baseTime = parseTimeString(time);
     
     if (mode === 'wakeup') {
       // Calculate bedtimes for wake-up time
-      for (let i = 6; i >= 3; i--) {
-        const bedTime = new Date(baseTime.getTime());
-        // Subtract sleep cycles + falling asleep time
-        bedTime.setMinutes(bedTime.getMinutes() - (i * SLEEP_CYCLE_DURATION + FALLING_ASLEEP_TIME));
-        calculatedTimes.push(bedTime);
-      }
+      setResults(calculateBedtimes(baseTime));
     } else {
       // Calculate wake-up times for bedtime
-      for (let i = 3; i <= 6; i++) {
-        const wakeTime = new Date(baseTime.getTime());
-        // Add falling asleep time + sleep cycles
-        wakeTime.setMinutes(wakeTime.getMinutes() + FALLING_ASLEEP_TIME + (i * SLEEP_CYCLE_DURATION));
-        calculatedTimes.push(wakeTime);
-      }
+      setResults(calculateWakeUpTimes(baseTime));
     }
-    
-    setResults(calculatedTimes);
   }, [time, mode]);
   
   // Generate personalized sleep quality tips based on the time
@@ -187,19 +111,20 @@ function SleepResultsContent() {
     setSleepQualityTips(tips);
   }, [time, mode]);
   
-  // Handle client-side mounting
+  // Client-side mounting
   useEffect(() => {
     setMounted(true);
     calculateSleepTimes();
     generateSleepQualityTips();
+    
+    // Set same page title as the homepage
+    if (typeof window !== 'undefined') {
+      document.title = "Sleep Calculator - Calculate Your Ideal Sleep & Wake Times";
+    }
   }, [calculateSleepTimes, generateSleepQualityTips]);
   
   const formatTime = (date: Date) => {
-    const hours = date.getHours();
-    const minutes = date.getMinutes();
-    const ampm = hours >= 12 ? 'PM' : 'AM';
-    const displayHours = hours % 12 || 12;
-    return `${displayHours}:${minutes.toString().padStart(2, '0')} ${ampm}`;
+    return formatTimeAmPm(date);
   };
   
   const getCycleCount = (index: number) => {
@@ -253,6 +178,8 @@ function SleepResultsContent() {
   };
 
   const handleAddToCalendar = () => {
+    if (typeof window === 'undefined') return;
+    
     const recommendedIndex = results.findIndex((_, i) => isRecommended(i));
     const selectedTimeToUse = selectedTime || (recommendedIndex !== -1 ? results[recommendedIndex] : results[0]);
     
@@ -644,17 +571,6 @@ function SleepResultsContent() {
               Following your optimal sleep schedule helps maintain this balance for quality restorative sleep.
             </p>
           </div>
-        </motion.div>
-        
-        {/* 728x90 Ad Banner */}
-        <motion.div
-          className="w-full flex justify-center mb-8 max-w-4xl mx-auto"
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ delay: 0.4, duration: 0.5 }}
-        >
-          <AdPlaceholder width={728} height={90} className="hidden md:flex" />
-          <AdPlaceholder width={320} height={100} className="flex md:hidden" />
         </motion.div>
       </main>
       

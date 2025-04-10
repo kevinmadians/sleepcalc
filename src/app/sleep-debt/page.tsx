@@ -1,15 +1,17 @@
 "use client";
 
-import { useState, useEffect } from 'react';
-import { motion } from 'framer-motion';
-import dynamic from 'next/dynamic';
+import { useState, useEffect, useMemo } from 'react';
+import { motion, AnimatePresence } from 'framer-motion';
 import { useRouter } from 'next/navigation';
-import type { Metadata } from 'next';
-import Footer from '@/components/Footer';
-import AdPlaceholder from '@/components/AdPlaceholder';
+import dynamic from 'next/dynamic';
+import Head from 'next/head';
+import Footer from '@/components/layout/Footer';
+
+import { sleepDebtFAQs, createFAQSchema } from '@/utils/faqSchema';
+import { sleepDebtBreadcrumb } from '@/utils/breadcrumbSchema';
 
 // Dynamically import Navbar with no SSR to avoid hydration issues
-const Navbar = dynamic(() => import('@/components/Navbar'), { ssr: false });
+const Navbar = dynamic(() => import('@/components/layout/Navbar'), { ssr: false });
 
 // JSON-LD schema for SEO
 const sleepDebtSchema = {
@@ -26,6 +28,9 @@ const sleepDebtSchema = {
   },
   "keywords": "sleep debt calculator, sleep deficit calculator, sleep debt tracker, how much sleep do I need, sleep debt recovery, chronic sleep deprivation, cumulative sleep debt, weekly sleep debt, sleep debt health effects, optimal sleep duration, sleep pattern analysis, catch up on sleep, sleep banking, recover from sleep debt, sleep loss calculator, sleep balance calculator"
 };
+
+// Create FAQ schema
+const faqSchema = createFAQSchema(sleepDebtFAQs);
 
 // Sleep recommendations by age group
 const sleepRecommendations = [
@@ -101,9 +106,14 @@ export default function SleepDebtPage() {
   const [showResults, setShowResults] = useState(false);
   const [expandedSection, setExpandedSection] = useState<string | null>(null);
 
-  // Handle client-side mounting
+  // Handle client-side mounting and set page title
   useEffect(() => {
     setMounted(true);
+    
+    // Force set the document title directly
+    if (typeof window !== 'undefined') {
+      document.title = "Sleep Debt Calculator - Sleep Calculator";
+    }
   }, []);
 
   // Handle age group change
@@ -180,6 +190,14 @@ export default function SleepDebtPage() {
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(sleepDebtSchema) }}
+      />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema) }}
+      />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(sleepDebtBreadcrumb) }}
       />
       
       <Navbar />
@@ -933,16 +951,35 @@ export default function SleepDebtPage() {
             </div>
           </motion.div>
           
-          {/* Ad Banner */}
-          <motion.div
-            className="w-full flex justify-center mb-8"
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ delay: 0.4, duration: 0.5 }}
-          >
-            <AdPlaceholder width={728} height={90} className="hidden md:flex" />
-            <AdPlaceholder width={320} height={100} className="flex md:hidden" />
-          </motion.div>
+          {/* Resources Section */}
+          <div className="mt-10 mb-16">
+            <h2 className="text-2xl font-bold mb-8 text-center">Sleep Resources</h2>
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+              <div className="glass-card p-6 hover:shadow-lg transition-shadow">
+                <h3 className="text-xl font-semibold mb-4 text-primary-400">Sleep Tips</h3>
+                <p className="mb-6 text-gray-300">Learn evidence-based strategies to improve your sleep quality and reduce sleep debt.</p>
+                <button onClick={() => router.push('/sleep-tips')} className="btn-primary w-full">
+                  View Sleep Tips
+                </button>
+              </div>
+              
+              <div className="glass-card p-6 hover:shadow-lg transition-shadow">
+                <h3 className="text-xl font-semibold mb-4 text-primary-400">Sleep Calculator</h3>
+                <p className="mb-6 text-gray-300">Find the optimal times to sleep and wake up based on your sleep cycles.</p>
+                <button onClick={() => router.push('/')} className="btn-primary w-full">
+                  Use Calculator
+                </button>
+              </div>
+              
+              <div className="glass-card p-6 hover:shadow-lg transition-shadow">
+                <h3 className="text-xl font-semibold mb-4 text-primary-400">Nap Calculator</h3>
+                <p className="mb-6 text-gray-300">Calculate the best nap duration to boost alertness without affecting nighttime sleep.</p>
+                <button onClick={() => router.push('/nap-calculator')} className="btn-primary w-full">
+                  Plan a Nap
+                </button>
+              </div>
+            </div>
+          </div>
         </motion.div>
       </main>
       

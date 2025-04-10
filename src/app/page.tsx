@@ -5,33 +5,42 @@ import { motion } from 'framer-motion';
 import dynamic from 'next/dynamic';
 import { useRouter } from 'next/navigation';
 import Head from 'next/head';
-import CustomTimePicker from '@/components/CustomTimePicker';
-import Footer from '@/components/Footer';
-import AdPlaceholder from '@/components/AdPlaceholder';
+import CustomTimePicker from '@/components/ui/CustomTimePicker';
+import Footer from '@/components/layout/Footer';
+import Link from 'next/link';
 
 // Dynamically import Navbar with no SSR to avoid hydration issues
-const Navbar = dynamic(() => import('@/components/Navbar'), { ssr: false });
+const Navbar = dynamic(() => import('@/components/layout/Navbar'), { ssr: false });
 
-// JSON-LD schema for SEO
+// Add JSON-LD schema for the home page sleep calculator
 const sleepCalculatorSchema = {
   "@context": "https://schema.org",
   "@type": "WebApplication",
   "name": "Sleep Calculator",
   "applicationCategory": "HealthApplication",
   "operatingSystem": "Web",
-  "description": "Calculate your best sleep cycle times based on 90-minute sleep cycles. Find optimal bedtimes and wake-up times for better sleep quality.",
   "offers": {
     "@type": "Offer",
     "price": "0",
     "priceCurrency": "USD"
   },
+  "description": "Calculate your ideal bedtime and wake-up times based on sleep cycles. Free online Sleep Calculator helps you optimize your sleep schedule for better rest and increased energy.",
+  "keywords": "sleep calculator, sleep cycle calculator, bedtime calculator, wake-up time calculator",
   "aggregateRating": {
     "@type": "AggregateRating",
     "ratingValue": "4.8",
-    "ratingCount": "1243",
-    "reviewCount": "856"
+    "ratingCount": "1253",
+    "bestRating": "5",
+    "worstRating": "1"
   },
-  "keywords": "sleep calculator, best sleep calculator, sleep cycle calculator, bedtime calculator, wake-up time calculator, what time should I wake up, how much sleep do I need, sleep schedule calculator, REM sleep calculator, deep sleep calculator, best time to sleep calculator, sleep quality calculator, sleep duration calculator, ideal sleep time calculator, circadian rhythm calculator, sleep efficiency calculator, baby sleep calculator"
+  "featureList": [
+    "Calculate optimal bedtime based on desired wake-up time",
+    "Find ideal wake-up time based on when you go to sleep",
+    "90-minute sleep cycle optimization",
+    "Nap duration calculator",
+    "Sleep debt calculator",
+    "Sleep quality assessment"
+  ]
 };
 
 export default function Home() {
@@ -97,7 +106,7 @@ export default function Home() {
   ];
   
   return (
-    <>
+    <div className="min-h-screen flex flex-col">
       {/* JSON-LD structured data */}
       <script
         type="application/ld+json"
@@ -130,17 +139,6 @@ export default function Home() {
           >
             Calculate Your Best Sleep Cycle - Find optimal times to wake up or fall asleep
           </motion.p>
-          
-          {/* 728x90 Ad Banner */}
-          <motion.div
-            className="w-full flex justify-center my-6"
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ delay: 0.5, duration: 0.5 }}
-          >
-            <AdPlaceholder width={728} height={90} className="hidden md:flex" />
-            <AdPlaceholder width={320} height={100} className="flex md:hidden" />
-          </motion.div>
           
           <div className="w-full max-w-6xl flex flex-col lg:flex-row gap-8 mb-12">
             <motion.div 
@@ -265,6 +263,6 @@ export default function Home() {
         
         <Footer />
       </main>
-    </>
+    </div>
   );
 } 

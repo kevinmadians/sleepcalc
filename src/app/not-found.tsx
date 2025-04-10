@@ -4,17 +4,22 @@ import { useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import { motion } from 'framer-motion';
 import dynamic from 'next/dynamic';
-import Footer from '@/components/Footer';
-import AdPlaceholder from '@/components/AdPlaceholder';
+import Footer from '@/components/layout/Footer';
+
 
 // Dynamically import Navbar with no SSR to avoid hydration issues
-const Navbar = dynamic(() => import('@/components/Navbar'), { ssr: false });
+const Navbar = dynamic(() => import('@/components/layout/Navbar'), { ssr: false });
 
 export default function NotFound() {
   const router = useRouter();
   
   // Redirect to cookie-policy page after a short delay
   useEffect(() => {
+    // Force set the document title directly
+    if (typeof window !== 'undefined') {
+      document.title = "Page Not Found - Sleep Calculator";
+    }
+
     const redirectTimer = setTimeout(() => {
       router.push('/cookie-policy');
     }, 3000); // 3 second delay before redirect

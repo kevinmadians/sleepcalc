@@ -5,12 +5,15 @@ import { motion } from 'framer-motion';
 import dynamic from 'next/dynamic';
 import { useRouter } from 'next/navigation';
 import { Metadata } from 'next';
-import CustomTimePicker from '@/components/CustomTimePicker';
-import Footer from '@/components/Footer';
-import AdPlaceholder from '@/components/AdPlaceholder';
+import CustomTimePicker from '@/components/ui/CustomTimePicker';
+import Footer from '@/components/layout/Footer';
+
+import { napDurations, bestNapTimes } from '@/constants/napCalculator';
+import { formatTimeAmPm, parseTimeString } from '@/utils/date/formatters';
+import { calculateNapTimes } from '@/utils/date/calculations';
 
 // Dynamically import Navbar with no SSR to avoid hydration issues
-const Navbar = dynamic(() => import('@/components/Navbar'), { ssr: false });
+const Navbar = dynamic(() => import('@/components/layout/Navbar'), { ssr: false });
 
 // JSON-LD schema for SEO
 const napCalculatorSchema = {
@@ -28,49 +31,6 @@ const napCalculatorSchema = {
   "keywords": "nap calculator, power nap calculator, best nap duration, optimal nap time, how long should I nap, refresh nap, full cycle nap, nap schedule calculator, power nap benefits, midday nap, afternoon nap, quick nap timer, nap benefits calculator, short nap benefits, long nap benefits, sleep cycle nap, nap time optimization"
 };
 
-// Define nap durations and their benefits
-const napDurations = [
-  {
-    id: "power",
-    name: "Power Nap",
-    duration: "10-20 min",
-    benefits: "Quick alertness boost without grogginess",
-    icon: "⚡",
-    description: "A power nap is perfect for a quick energy boost. It keeps you in the lighter stages of sleep, helping you wake up feeling alert rather than groggy.",
-    durationMinutes: 20
-  },
-  {
-    id: "refresh",
-    name: "Refresh Nap",
-    duration: "30-60 min",
-    benefits: "Memory and cognitive enhancement",
-    icon: "🧠",
-    description: "This longer nap includes some deeper sleep, helping with memory consolidation and cognitive processing. May cause some sleep inertia upon waking.",
-    durationMinutes: 45
-  },
-  {
-    id: "full",
-    name: "Full Cycle",
-    duration: "90 min",
-    benefits: "Complete rejuvenation with REM sleep",
-    icon: "🌀",
-    description: "A 90-minute nap allows you to complete one full sleep cycle, including REM sleep. This helps with creativity, emotional processing, and physical recovery.",
-    durationMinutes: 90
-  }
-];
-
-// Best times for napping
-const bestNapTimes = [
-  {
-    timeRange: "1:00 - 3:00 PM",
-    description: "Post-lunch dip in alertness makes this an ideal time for most people to nap."
-  },
-  {
-    timeRange: "5:00 - 7:00 PM",
-    description: "Early evening can work well if it's at least 3 hours before your bedtime."
-  }
-];
-
 export default function NapCalculatorPage() {
   const router = useRouter();
   const [mounted, setMounted] = useState(false);
@@ -84,9 +44,14 @@ export default function NapCalculatorPage() {
   const [napDetails, setNapDetails] = useState<{wakeTime: string, sleepTime: string} | null>(null);
   const [napTips, setNapTips] = useState<string[]>([]);
   
-  // Handle client-side mounting
+  // Client-side mounting logic
   useEffect(() => {
     setMounted(true);
+    
+    // Force set the document title directly
+    if (typeof window !== 'undefined') {
+      document.title = "Nap Calculator - Sleep Calculator";
+    }
   }, []);
   
   const handleTimeChange = (time: string) => {
@@ -95,27 +60,22 @@ export default function NapCalculatorPage() {
   
   const handleDurationSelect = (duration: number) => {
     setSelectedDuration(duration);
-    calculateNapTimes(currentTime, duration);
+    calculateNapTimesAndSetState(currentTime, duration);
   };
   
   // Calculate wake-up time based on nap duration
-  const calculateNapTimes = (startTime: string, duration: number) => {
+  const calculateNapTimesAndSetState = (startTimeStr: string, duration: number) => {
     // Parse the start time
-    const [hours, minutes] = startTime.split(':').map(Number);
+    const startTime = parseTimeString(startTimeStr);
     
-    // Add 5 minutes to fall asleep
-    let fallAsleepDate = new Date();
-    fallAsleepDate.setHours(hours, minutes + 5, 0, 0);
-    
-    // Calculate wake-up time
-    let wakeDate = new Date(fallAsleepDate);
-    wakeDate.setMinutes(wakeDate.getMinutes() + duration);
+    // Calculate nap times using our utility function
+    const { sleepTime, wakeTime } = calculateNapTimes(startTime, duration);
     
     // Format times for display
-    const sleepTime = formatTime(fallAsleepDate);
-    const wakeTime = formatTime(wakeDate);
+    const sleepTimeFormatted = formatTimeAmPm(sleepTime);
+    const wakeTimeFormatted = formatTimeAmPm(wakeTime);
     
-    setNapDetails({ sleepTime, wakeTime });
+    setNapDetails({ sleepTime: sleepTimeFormatted, wakeTime: wakeTimeFormatted });
     setShowResults(true);
     
     // Set nap tips based on selected duration
@@ -143,16 +103,6 @@ export default function NapCalculatorPage() {
     }
   };
   
-  // Format time for display
-  const formatTime = (date: Date) => {
-    const hours = date.getHours();
-    const minutes = date.getMinutes();
-    const ampm = hours >= 12 ? 'PM' : 'AM';
-    const formattedHours = hours % 12 || 12;
-    
-    return `${formattedHours}:${minutes.toString().padStart(2, '0')} ${ampm}`;
-  };
-  
   const resetCalculator = () => {
     setSelectedDuration(null);
     setShowResults(false);
@@ -161,6 +111,8 @@ export default function NapCalculatorPage() {
   
   // Function to add nap to calendar
   const addToCalendar = () => {
+    if (typeof window === 'undefined') return;
+    
     if (!napDetails) return;
     
     // Parse the sleep and wake times

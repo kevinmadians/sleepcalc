@@ -2,11 +2,15 @@ import type { Metadata, Viewport } from 'next';
 import { Inter } from 'next/font/google';
 import './globals.css';
 import Script from 'next/script';
+import { websiteSchema } from '@/utils/websiteSchema';
 
 const inter = Inter({ subsets: ['latin'] });
 
 export const metadata: Metadata = {
-  title: 'Sleep Calculator - Calculate Your Best Sleep Cycle',
+  title: {
+    template: '%s',
+    default: 'Sleep Calculator - Calculate Your Ideal Sleep & Wake Times',
+  },
   description: 'Optimize your sleep schedule with Sleep Calculator\'s sleep cycle calculator. Find ideal bedtimes, wake-up times, and nap durations for better rest and productivity.',
   keywords: 'sleep calculator, best sleep calculator, sleep cycle calculator, bedtime calculator, wake-up time calculator, what time should I wake up, how much sleep do I need, sleep schedule calculator, REM sleep calculator, deep sleep calculator, best time to sleep calculator, sleep quality calculator, sleep duration calculator, ideal sleep time calculator, circadian rhythm calculator, sleep efficiency calculator, baby sleep calculator',
   authors: [{ name: 'Sleep Calculator Team' }],
@@ -38,7 +42,7 @@ export const metadata: Metadata = {
   openGraph: {
     type: 'website',
     url: 'https://sleepcalc.net',
-    title: 'Sleep Calculator - Calculate Your Best Sleep Cycle',
+    title: 'Sleep Calculator - Calculate Your Ideal Sleep & Wake Times',
     description: 'Optimize your sleep schedule with Sleep Calculator\'s sleep cycle calculator. Find ideal bedtimes, wake-up times, and nap durations for better rest and productivity.',
     siteName: 'Sleep Calculator',
     images: [
@@ -52,7 +56,7 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'Sleep Calculator - Calculate Your Best Sleep Cycle',
+    title: 'Sleep Calculator - Calculate Your Ideal Sleep & Wake Times',
     description: 'Optimize your sleep schedule with Sleep Calculator\'s sleep cycle calculator. Find ideal bedtimes, wake-up times, and nap durations for better rest and productivity.',
     images: ['/twitter-image.png'],
     creator: '@sleepcalculator',
@@ -85,7 +89,7 @@ export default function RootLayout({
   children: React.ReactNode
 }) {
   return (
-    <html lang="en" suppressHydrationWarning>
+    <html lang="en" suppressHydrationWarning={true}>
       <head>
         {/* Google Analytics */}
         <Script 
@@ -95,14 +99,22 @@ export default function RootLayout({
         />
         <Script id="google-analytics" strategy="afterInteractive">
           {`
-            window.dataLayer = window.dataLayer || [];
-            function gtag(){dataLayer.push(arguments);}
-            gtag('js', new Date());
-            gtag('config', 'G-JYRG2NF1Q1');
+            if (typeof window !== 'undefined') {
+              window.dataLayer = window.dataLayer || [];
+              function gtag(){dataLayer.push(arguments);}
+              gtag('js', new Date());
+              gtag('config', 'G-JYRG2NF1Q1');
+            }
           `}
         </Script>
+        
+        {/* Website Schema */}
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(websiteSchema) }}
+        />
       </head>
-      <body className={`${inter.className} bg-dark-900 text-white min-h-screen`}>
+      <body className={`${inter.className} bg-dark-900 text-white min-h-screen`} suppressHydrationWarning={true}>
         {children}
       </body>
     </html>

@@ -3,11 +3,11 @@
 import { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import dynamic from 'next/dynamic';
-import Footer from '@/components/Footer';
-import AdPlaceholder from '@/components/AdPlaceholder';
+import Footer from '@/components/layout/Footer';
+
 
 // Dynamically import Navbar with no SSR to avoid hydration issues
-const Navbar = dynamic(() => import('@/components/Navbar'), { ssr: false });
+const Navbar = dynamic(() => import('@/components/layout/Navbar'), { ssr: false });
 
 // Assessment questions
 const questions = [
@@ -245,9 +245,14 @@ export default function SleepAssessmentContent() {
   } | null>(null);
   const [mounted, setMounted] = useState(false);
 
-  // Handle client-side mounting
+  // Set document title
   useEffect(() => {
     setMounted(true);
+    
+    // Force set the document title directly
+    if (typeof window !== 'undefined') {
+      document.title = "Sleep Assessment - Sleep Calculator";
+    }
   }, []);
 
   const handleAnswer = (questionId: number, optionId: string, score: number) => {
@@ -594,17 +599,6 @@ export default function SleepAssessmentContent() {
               If you have serious concerns about your sleep, please consult a healthcare professional.
             </p>
           </div>
-          
-          {/* 728x90 Ad Banner */}
-          <motion.div
-            className="w-full flex justify-center mb-8"
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ delay: 0.4, duration: 0.5 }}
-          >
-            <AdPlaceholder width={728} height={90} className="hidden md:flex" />
-            <AdPlaceholder width={320} height={100} className="flex md:hidden" />
-          </motion.div>
         </motion.div>
       </main>
       
@@ -612,3 +606,4 @@ export default function SleepAssessmentContent() {
     </div>
   );
 } 
+// End of sleep assessment content - updated to fix AdPlaceholder reference issue 

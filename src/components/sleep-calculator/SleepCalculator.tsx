@@ -2,12 +2,10 @@
 
 import { useState, useEffect, useCallback } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import CustomTimePicker from './CustomTimePicker';
-
-// Constants
-const SLEEP_CYCLE_DURATION = 90; // minutes
-const FALLING_ASLEEP_TIME = 15; // minutes
-const RECOMMENDED_CYCLES = [5, 6]; // 5 or 6 cycles is recommended (7.5-9 hours)
+import CustomTimePicker from '@/components/ui/CustomTimePicker';
+import { calculateBedtimes, calculateWakeUpTimes } from '@/utils/date/calculations';
+import { formatTimeAmPm, parseTimeString } from '@/utils/date/formatters';
+import { SLEEP_CYCLE_DURATION, RECOMMENDED_CYCLES } from '@/constants/sleepCalculator';
 
 type SleepCalculatorProps = {
   mode: 'wakeup' | 'sleep';
@@ -24,31 +22,15 @@ const SleepCalculator = ({ mode }: SleepCalculatorProps) => {
   
   // Define calculateSleepTimes with useCallback
   const calculateSleepTimes = useCallback(() => {
-    const [hours, minutes] = time.split(':').map(Number);
-    const baseTime = new Date();
-    baseTime.setHours(hours, minutes, 0, 0);
-    
-    const calculatedTimes: Date[] = [];
+    const baseTime = parseTimeString(time);
     
     if (mode === 'wakeup') {
       // Calculate bedtimes for wake-up time
-      for (let i = 6; i >= 3; i--) {
-        const bedTime = new Date(baseTime.getTime());
-        // Subtract sleep cycles + falling asleep time
-        bedTime.setMinutes(bedTime.getMinutes() - (i * SLEEP_CYCLE_DURATION + FALLING_ASLEEP_TIME));
-        calculatedTimes.push(bedTime);
-      }
+      setResults(calculateBedtimes(baseTime));
     } else {
       // Calculate wake-up times for bedtime
-      for (let i = 3; i <= 6; i++) {
-        const wakeTime = new Date(baseTime.getTime());
-        // Add falling asleep time + sleep cycles
-        wakeTime.setMinutes(wakeTime.getMinutes() + FALLING_ASLEEP_TIME + (i * SLEEP_CYCLE_DURATION));
-        calculatedTimes.push(wakeTime);
-      }
+      setResults(calculateWakeUpTimes(baseTime));
     }
-    
-    setResults(calculatedTimes);
   }, [time, mode]);
   
   // Calculate sleep times when time changes or mode changes
@@ -58,14 +40,6 @@ const SleepCalculator = ({ mode }: SleepCalculatorProps) => {
   
   const handleTimeChange = (newTime: string) => {
     setTime(newTime);
-  };
-  
-  const formatTime = (date: Date) => {
-    const hours = date.getHours();
-    const minutes = date.getMinutes();
-    const ampm = hours >= 12 ? 'PM' : 'AM';
-    const displayHours = hours % 12 || 12;
-    return `${displayHours}:${minutes.toString().padStart(2, '0')} ${ampm}`;
   };
   
   const getCycleCount = (index: number) => {
@@ -86,7 +60,7 @@ const SleepCalculator = ({ mode }: SleepCalculatorProps) => {
   const handleShareResults = async () => {
     const shareText = `My ${mode === 'wakeup' ? 'bedtime' : 'wake-up time'} options:\n` +
       results.map((time, i) => 
-        `${formatTime(time)} (${getSleepDuration(getCycleCount(i))} of sleep)`
+        `${formatTimeAmPm(time)} (${getSleepDuration(getCycleCount(i))} of sleep)`
       ).join('\n') +
       '\nCalculated with Sleep Cycle Calculator';
     
@@ -135,7 +109,7 @@ const SleepCalculator = ({ mode }: SleepCalculatorProps) => {
                 }`}
               >
                 <div>
-                  <div className="text-xl font-bold text-white">{formatTime(result)}</div>
+                  <div className="text-xl font-bold text-white">{formatTimeAmPm(result)}</div>
                   <div className="text-sm text-gray-400">
                     {getCycleCount(index)} cycles • {getSleepDuration(getCycleCount(index))} of sleep
                   </div>
