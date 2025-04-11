@@ -6,6 +6,9 @@ A modern web application built with Next.js and React that helps users calculate
 
 - Sleep time calculator (bedtime or wake-up time)
 - Nap calculator for power naps and REM cycle naps
+- Sleep Quality Tracker with visual data analysis and personalized recommendations
+- Smart Alarm Calculator with chronotype optimization and morning routine planning
+- Caffeine Calculator with half-life visualization and optimal caffeine cutoff times
 - Sleep debt calculator
 - Chronotype analyzer
 - Sleep assessment tool
@@ -18,6 +21,7 @@ A modern web application built with Next.js and React that helps users calculate
 - **Frontend Framework**: Next.js 15 (React 19)
 - **Styling**: Tailwind CSS 3.3
 - **Animations**: Framer Motion 12
+- **Visualization**: Chart.js with React-ChartJS-2
 - **State Management**: React Hooks
 - **Deployment**: Vercel
 
@@ -31,6 +35,9 @@ src/
 │   ├── page.tsx            # Home page
 │   ├── sleep-results/      # Sleep calculation results page
 │   ├── nap-calculator/     # Nap calculator page
+│   ├── sleep-tracker/      # Sleep quality tracking and analysis page
+│   ├── smart-alarm/        # Smart alarm calculator page
+│   ├── caffeine-calculator/ # Caffeine calculator page
 │   ├── sleep-debt/         # Sleep debt calculator page
 │   ├── chronotype-analyzer/ # Chronotype analyzer page  
 │   ├── sleep-assessment/   # Sleep assessment page
@@ -47,16 +54,41 @@ src/
 │   ├── layout/             # Layout components (Navbar, Footer, etc.)
 │   ├── sleep-calculator/   # Sleep calculator specific components
 │   ├── nap-calculator/     # Nap calculator specific components
+│   ├── sleep-tracker/      # Sleep tracker specific components
+│   ├── smart-alarm/        # Smart alarm specific components
+│   ├── caffeine-calculator/ # Caffeine calculator specific components
 │   └── ui/                 # Reusable UI components (CustomTimePicker, etc.)
 │
 ├── constants/              # Application constants and configuration
 │   ├── sleepCalculator.ts  # Sleep calculator constants
-│   └── napCalculator.ts    # Nap calculator constants
+│   ├── napCalculator.ts    # Nap calculator constants
+│   └── smartAlarm.ts       # Smart alarm calculator constants
 │
 └── utils/                  # Utility functions
     ├── date/               # Date formatting and calculation utilities
-    └── faqSchema.js        # JSON-LD schema generation utilities
+    ├── chart/              # Chart.js configuration utilities
+    └── schema/             # JSON-LD schema generation utilities
 ```
+
+## Key Features in Detail
+
+### Sleep Quality Tracker
+- Log sleep duration, quality, and mood
+- Visualize sleep patterns with interactive charts
+- Get personalized recommendations based on sleep data
+- Track progress over time with sleep history
+
+### Smart Alarm Calculator
+- Calculate optimal wake times based on sleep cycles
+- Factor in chronotype (Lion, Bear, Wolf, Dolphin) for personalized recommendations
+- Account for sleep inertia in wake-up planning
+- Visualize sleep stages and generate a customized morning routine
+
+### Caffeine Calculator
+- Track caffeine intake from various sources
+- Visualize caffeine metabolism and half-life
+- Get personalized recommendations for bedtime caffeine cutoff
+- Learn about caffeine's effects on sleep through educational content
 
 ## SEO Optimization
 

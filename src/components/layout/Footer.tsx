@@ -22,8 +22,11 @@ export default function Footer() {
         { text: 'Nap Calculator', href: '/nap-calculator' },
         { text: 'Sleep Tips', href: '/sleep-tips' },
         { text: 'Sleep Assessment', href: '/sleep-assessment' },
+        { text: 'Sleep Tracker', href: '/sleep-tracker' },
         { text: 'Sleep Debt Calculator', href: '/sleep-debt' },
-        { text: 'Chronotype Analyzer', href: '/chronotype-analyzer' }
+        { text: 'Chronotype Analyzer', href: '/chronotype-analyzer' },
+        { text: 'Smart Alarm Calculator', href: '/smart-alarm' },
+        { text: 'Caffeine Calculator', href: '/caffeine-calculator' }
       ]
     },
     {

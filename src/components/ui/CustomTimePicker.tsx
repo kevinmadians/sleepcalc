@@ -96,7 +96,7 @@ const CustomTimePicker = ({ value, onChange, is24Hour = false }: CustomTimePicke
             {/* Up button */}
             <button 
               className="absolute top-0 left-0 right-0 h-10 flex items-center justify-center text-blue-400 hover:text-blue-300 transition-colors z-10"
-              onClick={decrementHour}
+              onClick={incrementHour}
             >
               <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" className="w-5 h-5">
                 <path fillRule="evenodd" d="M11.47 7.72a.75.75 0 011.06 0l7.5 7.5a.75.75 0 11-1.06 1.06L12 9.31l-6.97 6.97a.75.75 0 01-1.06-1.06l7.5-7.5z" clipRule="evenodd" />
@@ -113,7 +113,7 @@ const CustomTimePicker = ({ value, onChange, is24Hour = false }: CustomTimePicke
             {/* Down button */}
             <button 
               className="absolute bottom-0 left-0 right-0 h-10 flex items-center justify-center text-blue-400 hover:text-blue-300 transition-colors z-10"
-              onClick={incrementHour}
+              onClick={decrementHour}
             >
               <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" className="w-5 h-5">
                 <path fillRule="evenodd" d="M12.53 16.28a.75.75 0 01-1.06 0l-7.5-7.5a.75.75 0 011.06-1.06L12 14.69l6.97-6.97a.75.75 0 011.06 1.06l-7.5 7.5z" clipRule="evenodd" />
@@ -126,7 +126,7 @@ const CustomTimePicker = ({ value, onChange, is24Hour = false }: CustomTimePicke
             {/* Up button */}
             <button 
               className="absolute top-0 left-0 right-0 h-10 flex items-center justify-center text-blue-400 hover:text-blue-300 transition-colors z-10"
-              onClick={decrementMinute}
+              onClick={incrementMinute}
             >
               <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" className="w-5 h-5">
                 <path fillRule="evenodd" d="M11.47 7.72a.75.75 0 011.06 0l7.5 7.5a.75.75 0 11-1.06 1.06L12 9.31l-6.97 6.97a.75.75 0 01-1.06-1.06l7.5-7.5z" clipRule="evenodd" />
@@ -143,7 +143,7 @@ const CustomTimePicker = ({ value, onChange, is24Hour = false }: CustomTimePicke
             {/* Down button */}
             <button 
               className="absolute bottom-0 left-0 right-0 h-10 flex items-center justify-center text-blue-400 hover:text-blue-300 transition-colors z-10"
-              onClick={incrementMinute}
+              onClick={decrementMinute}
             >
               <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" className="w-5 h-5">
                 <path fillRule="evenodd" d="M12.53 16.28a.75.75 0 01-1.06 0l-7.5-7.5a.75.75 0 011.06-1.06L12 14.69l6.97-6.97a.75.75 0 011.06 1.06l-7.5 7.5z" clipRule="evenodd" />
