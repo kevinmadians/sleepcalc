@@ -11,10 +11,6 @@ import SleepStatistics from '@/components/sleep/SleepStatistics';
 // Register ChartJS components
 ChartJS.register(CategoryScale, LinearScale, PointElement, LineElement, BarElement, Title, Tooltip, Legend);
 
-// Dynamically import Navbar with no SSR to avoid hydration issues
-const Navbar = dynamic(() => import('@/components/layout/Navbar'), { ssr: false });
-const Footer = dynamic(() => import('@/components/layout/Footer'), { ssr: false });
-
 // Interface for our sleep log entry
 interface SleepLogEntry {
   id: string;
@@ -477,7 +473,6 @@ export default function SleepTrackerContent() {
   
   return (
     <>
-      <Navbar />
       <main className="min-h-screen bg-dark-900 text-white py-8">
         <div className="container mx-auto px-4">
           <motion.div
@@ -493,7 +488,7 @@ export default function SleepTrackerContent() {
               Our advanced Sleep Quality Tracker helps you monitor your sleep patterns, identify trends, and receive personalized recommendations to optimize your rest. Track your mood, energy levels, and sleep quality to unlock better sleep and more energized days.
             </p>
             
-            {/* Main CTA Button - Only show if not clicked */}
+            {/* Main CTA Button - Only show if not clicked and on intro tab */}
             {activeTab === 'intro' && !buttonClicked && (
               <motion.div 
                 className="flex justify-center mb-12"
@@ -523,8 +518,72 @@ export default function SleepTrackerContent() {
                 </button>
               </motion.div>
             )}
+
+            {/* Tab Navigation - Show for all users */}
+            <div className="flex justify-center mb-8 overflow-x-auto">
+              <div className="flex flex-wrap justify-center space-x-1 md:space-x-2 bg-dark-800 p-1 rounded-lg">
+                <button
+                  onClick={() => setActiveTab('intro' as TabType)}
+                  className={`px-3 py-2 rounded-md transition-colors text-sm md:text-base ${
+                    activeTab === 'intro' ? 'bg-primary-600 text-white' : 'text-gray-400 hover:text-white'
+                  }`}
+                >
+                  Overview
+                </button>
+                <button
+                  onClick={() => setActiveTab('log')}
+                  className={`px-3 py-2 rounded-md transition-colors text-sm md:text-base ${
+                    activeTab === 'log' ? 'bg-primary-600 text-white' : 'text-gray-400 hover:text-white'
+                  }`}
+                >
+                  Log Sleep
+                </button>
+                <button
+                  onClick={() => setActiveTab('report')}
+                  className={`px-3 py-2 rounded-md transition-colors text-sm md:text-base ${
+                    activeTab === 'report' ? 'bg-primary-600 text-white' : 'text-gray-400 hover:text-white'
+                  }`}
+                >
+                  Sleep Report
+                </button>
+                <button
+                  onClick={() => setActiveTab('trends')}
+                  className={`px-3 py-2 rounded-md transition-colors text-sm md:text-base ${
+                    activeTab === 'trends' ? 'bg-primary-600 text-white' : 'text-gray-400 hover:text-white'
+                  }`}
+                >
+                  Sleep Trends
+                </button>
+                <button
+                  onClick={() => setActiveTab('recommendations')}
+                  className={`px-3 py-2 rounded-md transition-colors text-sm md:text-base ${
+                    activeTab === 'recommendations' ? 'bg-primary-600 text-white' : 'text-gray-400 hover:text-white'
+                  }`}
+                >
+                  Recommendations
+                </button>
+                <button
+                  onClick={() => setActiveTab('health')}
+                  className={`px-3 py-2 rounded-md transition-colors text-sm md:text-base ${
+                    activeTab === 'health' ? 'bg-primary-600 text-white' : 'text-gray-400 hover:text-white'
+                  }`}
+                >
+                  Health Insights
+                </button>
+                <button
+                  onClick={() => setActiveTab('stats')}
+                  className={`px-3 py-2 rounded-md transition-colors text-sm md:text-base ${
+                    activeTab === 'stats' ? 'bg-primary-600 text-white' : 'text-gray-400 hover:text-white'
+                  }`}
+                >
+                  Sleep Statistics
+                </button>
+              </div>
+            </div>
+
+            {/* Now include all the tab content sections, each conditional on the active tab */}
             
-            {/* Feature Highlights */}
+            {/* Feature Highlights - Only show on intro tab */}
             {activeTab === 'intro' && (
               <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-10 max-w-5xl mx-auto">
                 <motion.div 
@@ -705,68 +764,169 @@ export default function SleepTrackerContent() {
               </div>
             )}
             
-            {/* Tab Navigation - Only show if not on intro page */}
-            {activeTab !== 'intro' && (
-              <div className="flex justify-center mb-8 overflow-x-auto">
-                <div className="flex flex-wrap justify-center space-x-1 md:space-x-2 bg-dark-800 p-1 rounded-lg">
-                  <button
-                    onClick={() => setActiveTab('intro' as TabType)}
-                    className={`px-3 py-2 rounded-md transition-colors text-sm md:text-base ${
-                      activeTab === ('intro' as TabType) ? 'bg-primary-600 text-white' : 'text-gray-400 hover:text-white'
-                    }`}
+            {/* NEW: Getting Started Guide - Added for better UX */}
+            {activeTab === 'intro' && (
+              <motion.div 
+                className="max-w-4xl mx-auto mb-12 bg-gradient-to-br from-dark-800 to-dark-900 rounded-xl overflow-hidden shadow-lg border border-dark-700"
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.5, delay: 0.2 }}
+              >
+                <div className="bg-primary-900/20 py-4 px-6 border-b border-dark-700">
+                  <h3 className="text-2xl font-bold">
+                    <span className="text-primary-400">Getting Started</span> With Sleep Tracking
+                  </h3>
+                </div>
+                <div className="p-6">
+                  <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+                    <div className="flex flex-col items-center text-center">
+                      <div className="w-12 h-12 flex items-center justify-center bg-primary-900/30 text-primary-400 rounded-full mb-4 text-2xl font-bold">1</div>
+                      <h4 className="text-lg font-semibold mb-2">Log Your Sleep</h4>
+                      <p className="text-gray-300 text-sm">Record your bedtime, wake time, sleep quality, mood, and energy levels daily for at least a week.</p>
+                    </div>
+                    <div className="flex flex-col items-center text-center">
+                      <div className="w-12 h-12 flex items-center justify-center bg-primary-900/30 text-primary-400 rounded-full mb-4 text-2xl font-bold">2</div>
+                      <h4 className="text-lg font-semibold mb-2">Review Your Trends</h4>
+                      <p className="text-gray-300 text-sm">Examine your sleep patterns through interactive charts to identify trends and opportunities.</p>
+                    </div>
+                    <div className="flex flex-col items-center text-center">
+                      <div className="w-12 h-12 flex items-center justify-center bg-primary-900/30 text-primary-400 rounded-full mb-4 text-2xl font-bold">3</div>
+                      <h4 className="text-lg font-semibold mb-2">Apply Improvements</h4>
+                      <p className="text-gray-300 text-sm">Implement personalized recommendations and track how they impact your sleep quality over time.</p>
+                    </div>
+                  </div>
+                  <div className="mt-6 flex justify-center">
+                    <button 
+                      onClick={() => {
+                        setActiveTab('log');
+                        setButtonClicked(true);
+                        scrollToLogSleepHeading();
+                      }} 
+                      className="bg-primary-600 hover:bg-primary-500 text-white px-6 py-2 rounded-lg font-medium transition-colors flex items-center group"
+                    >
+                      Start Your Sleep Journal
+                      <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 ml-2 group-hover:translate-x-1 transition-transform" viewBox="0 0 20 20" fill="currentColor">
+                        <path fillRule="evenodd" d="M10.293 5.293a1 1 0 011.414 0l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414-1.414L12.586 11H5a1 1 0 110-2h7.586l-2.293-2.293a1 1 0 010-1.414z" clipRule="evenodd" />
+                      </svg>
+                    </button>
+                  </div>
+                </div>
+              </motion.div>
+            )}
+            
+            {/* Sleep Science Facts - Interactive Slider */}
+            {activeTab === 'intro' && (
+              <motion.div 
+                className="max-w-4xl mx-auto mb-12"
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.5, delay: 0.3 }}
+              >
+                <h3 className="text-2xl font-bold text-center mb-6">Fascinating <span className="text-primary-400">Sleep Science</span> Facts</h3>
+                
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                  <div className="bg-dark-800 p-5 rounded-xl border border-dark-700 shadow-lg hover:shadow-xl transition-all duration-300 hover:border-primary-900">
+                    <div className="text-primary-400 text-3xl mb-2 font-bold">90</div>
+                    <h4 className="text-lg font-semibold mb-3">Minutes in a Sleep Cycle</h4>
+                    <p className="text-gray-300 text-sm">The average sleep cycle lasts about 90 minutes, with each cycle including light sleep, deep sleep, and REM sleep. Most adults need 4-6 complete cycles per night.</p>
+                  </div>
+                  
+                  <div className="bg-dark-800 p-5 rounded-xl border border-dark-700 shadow-lg hover:shadow-xl transition-all duration-300 hover:border-primary-900">
+                    <div className="text-primary-400 text-3xl mb-2 font-bold">25%</div>
+                    <h4 className="text-lg font-semibold mb-3">Of Sleep is REM</h4>
+                    <p className="text-gray-300 text-sm">REM (Rapid Eye Movement) sleep typically accounts for 25% of your total sleep time. This is when most dreaming occurs and is crucial for memory consolidation and learning.</p>
+                  </div>
+                  
+                  <div className="bg-dark-800 p-5 rounded-xl border border-dark-700 shadow-lg hover:shadow-xl transition-all duration-300 hover:border-primary-900">
+                    <div className="text-primary-400 text-3xl mb-2 font-bold">16-20%</div>
+                    <h4 className="text-lg font-semibold mb-3">Is Deep Sleep</h4>
+                    <p className="text-gray-300 text-sm">Deep sleep (slow-wave sleep) makes up about 16-20% of sleep in healthy adults. This stage is critical for physical restoration, immune function, and growth hormone release.</p>
+                  </div>
+                  
+                  <div className="bg-dark-800 p-5 rounded-xl border border-dark-700 shadow-lg hover:shadow-xl transition-all duration-300 hover:border-primary-900">
+                    <div className="text-primary-400 text-3xl mb-2 font-bold">7-14</div>
+                    <h4 className="text-lg font-semibold mb-3">Day Reset Period</h4>
+                    <p className="text-gray-300 text-sm">It takes 7-14 days of consistent sleep patterns to reset your circadian rhythm. This is why tracking your sleep for at least two weeks provides the most meaningful insights.</p>
+                  </div>
+                </div>
+                
+                <div className="mt-8 text-center">
+                  <p className="text-gray-400 text-sm italic mb-2">Regular sleep tracking helps identify how these factors impact your personal sleep quality</p>
+                  <button 
+                    onClick={() => setActiveTab('health')} 
+                    className="text-primary-400 hover:text-primary-300 transition-colors text-sm font-medium"
                   >
-                    Overview
-                  </button>
-                  <button
-                    onClick={() => setActiveTab('log')}
-                    className={`px-3 py-2 rounded-md transition-colors text-sm md:text-base ${
-                      activeTab === 'log' ? 'bg-primary-600 text-white' : 'text-gray-400 hover:text-white'
-                    }`}
-                  >
-                    Log Sleep
-                  </button>
-                  <button
-                    onClick={() => setActiveTab('report')}
-                    className={`px-3 py-2 rounded-md transition-colors text-sm md:text-base ${
-                      activeTab === 'report' ? 'bg-primary-600 text-white' : 'text-gray-400 hover:text-white'
-                    }`}
-                  >
-                    Sleep Report
-                  </button>
-                  <button
-                    onClick={() => setActiveTab('trends')}
-                    className={`px-3 py-2 rounded-md transition-colors text-sm md:text-base ${
-                      activeTab === 'trends' ? 'bg-primary-600 text-white' : 'text-gray-400 hover:text-white'
-                    }`}
-                  >
-                    Sleep Trends
-                  </button>
-                  <button
-                    onClick={() => setActiveTab('recommendations')}
-                    className={`px-3 py-2 rounded-md transition-colors text-sm md:text-base ${
-                      activeTab === 'recommendations' ? 'bg-primary-600 text-white' : 'text-gray-400 hover:text-white'
-                    }`}
-                  >
-                    Recommendations
-                  </button>
-                  <button
-                    onClick={() => setActiveTab('health')}
-                    className={`px-3 py-2 rounded-md transition-colors text-sm md:text-base ${
-                      activeTab === 'health' ? 'bg-primary-600 text-white' : 'text-gray-400 hover:text-white'
-                    }`}
-                  >
-                    Health Insights
-                  </button>
-                  <button
-                    onClick={() => setActiveTab('stats')}
-                    className={`px-3 py-2 rounded-md transition-colors text-sm md:text-base ${
-                      activeTab === 'stats' ? 'bg-primary-600 text-white' : 'text-gray-400 hover:text-white'
-                    }`}
-                  >
-                    Sleep Statistics
+                    Learn more about sleep science
                   </button>
                 </div>
-              </div>
+              </motion.div>
+            )}
+            
+            {/* FAQ Section for Sleep Tracking */}
+            {activeTab === 'intro' && (
+              <motion.div 
+                className="max-w-4xl mx-auto mb-12"
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.5, delay: 0.4 }}
+              >
+                <h3 className="text-2xl font-bold text-center mb-8">Frequently Asked <span className="text-primary-400">Questions</span></h3>
+                
+                <div className="space-y-4 mb-8">
+                  <div className="bg-dark-800 p-5 rounded-xl border border-dark-700 hover:border-primary-700 transition-colors duration-300">
+                    <h4 className="text-lg font-semibold mb-2 flex items-center">
+                      <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 text-primary-400 mr-2" viewBox="0 0 20 20" fill="currentColor">
+                        <path fillRule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-8-3a1 1 0 00-.867.5 1 1 0 11-1.731-1A3 3 0 0113 8a3.001 3.001 0 01-2 2.83V11a1 1 0 11-2 0v-1a1 1 0 011-1 1 1 0 100-2zm0 8a1 1 0 100-2 1 1 0 000 2z" clipRule="evenodd" />
+                      </svg>
+                      How long should I track my sleep to see meaningful patterns?
+                    </h4>
+                    <p className="text-gray-300 pl-7">For meaningful insights, we recommend tracking your sleep for at least 2 weeks. This provides enough data to identify patterns related to your sleep quality, duration, and consistency. The longer you track, the more personalized your recommendations will become.</p>
+                  </div>
+                  
+                  <div className="bg-dark-800 p-5 rounded-xl border border-dark-700 hover:border-primary-700 transition-colors duration-300">
+                    <h4 className="text-lg font-semibold mb-2 flex items-center">
+                      <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 text-primary-400 mr-2" viewBox="0 0 20 20" fill="currentColor">
+                        <path fillRule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-8-3a1 1 0 00-.867.5 1 1 0 11-1.731-1A3 3 0 0113 8a3.001 3.001 0 01-2 2.83V11a1 1 0 11-2 0v-1a1 1 0 011-1 1 1 0 100-2zm0 8a1 1 0 100-2 1 1 0 000 2z" clipRule="evenodd" />
+                      </svg>
+                      Is my sleep data saved securely?
+                    </h4>
+                    <p className="text-gray-300 pl-7">Your sleep data is stored locally in your browser using secure local storage. We don't send your data to any servers - it stays on your device only. If you clear your browser data, your sleep logs will be reset.</p>
+                  </div>
+                  
+                  <div className="bg-dark-800 p-5 rounded-xl border border-dark-700 hover:border-primary-700 transition-colors duration-300">
+                    <h4 className="text-lg font-semibold mb-2 flex items-center">
+                      <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 text-primary-400 mr-2" viewBox="0 0 20 20" fill="currentColor">
+                        <path fillRule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-8-3a1 1 0 00-.867.5 1 1 0 11-1.731-1A3 3 0 0113 8a3.001 3.001 0 01-2 2.83V11a1 1 0 11-2 0v-1a1 1 0 011-1 1 1 0 100-2zm0 8a1 1 0 100-2 1 1 0 000 2z" clipRule="evenodd" />
+                      </svg>
+                      How accurate are the sleep recommendations?
+                    </h4>
+                    <p className="text-gray-300 pl-7">Our recommendations are based on sleep science research and the patterns detected in your personal sleep data. While they provide valuable guidance, they aren't meant to replace medical advice. For serious sleep concerns, please consult a healthcare professional.</p>
+                  </div>
+                  
+                  <div className="bg-dark-800 p-5 rounded-xl border border-dark-700 hover:border-primary-700 transition-colors duration-300">
+                    <h4 className="text-lg font-semibold mb-2 flex items-center">
+                      <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 text-primary-400 mr-2" viewBox="0 0 20 20" fill="currentColor">
+                        <path fillRule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-8-3a1 1 0 00-.867.5 1 1 0 11-1.731-1A3 3 0 0113 8a3.001 3.001 0 01-2 2.83V11a1 1 0 11-2 0v-1a1 1 0 011-1 1 1 0 100-2zm0 8a1 1 0 100-2 1 1 0 000 2z" clipRule="evenodd" />
+                      </svg>
+                      How does sleep tracking improve my sleep quality?
+                    </h4>
+                    <p className="text-gray-300 pl-7">Simply becoming aware of your sleep patterns often leads to better sleep habits. Our tracker helps you identify specific factors affecting your sleep, suggests personalized improvements, and motivates you to maintain consistent sleep hygiene practices over time.</p>
+                  </div>
+                </div>
+                
+                <div className="text-center">
+                  <button 
+                    onClick={() => {
+                      setButtonClicked(true);
+                      setActiveTab('log');
+                      scrollToLogSleepHeading();
+                    }} 
+                    className="bg-primary-600 hover:bg-primary-500 text-white px-8 py-3 rounded-lg font-bold transition-colors"
+                  >
+                    Start Tracking Your Sleep Now
+                  </button>
+                </div>
+              </motion.div>
             )}
             
             {/* Log Sleep Form */}
@@ -1669,7 +1829,6 @@ export default function SleepTrackerContent() {
           </motion.div>
         </div>
       </main>
-      <Footer />
     </>
   );
 } 

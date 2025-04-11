@@ -120,6 +120,8 @@ If needed, you can further use the `web_scraper.py` file to scrape the web page 
 - For complex visualizations and data-intensive features like sleep tracking, implement proper loading states and mounted checks to prevent rendering errors during server-side rendering.
 - When building data visualization components with ChartJS in Next.js, use appropriate color schemes that match your application theme and ensure all text is properly configured for readability (e.g., white text on dark backgrounds).
 - When implementing scrolling functionality, add appropriate timeouts (e.g., setTimeout with 200-300ms delay) to ensure elements are fully rendered before attempting to scroll to them.
+- When enhancing user engagement for interactive tools like a sleep tracker, include educational sections (like Sleep Science Facts), practical guidance (Getting Started Guide), and FAQ sections that address common user questions. This improves user understanding, increases engagement, and reduces bounce rates.
+- When adding informational content to tabbed interfaces, be careful not to duplicate content. If content should appear regardless of which tab is active, create a separate globally visible section outside the tabbed content area rather than repeating the same content in multiple tabs.
 
 # Scratchpad
 
@@ -212,6 +214,11 @@ Developing a modern web application that replicates SleepCalculator.com with enh
   [X] Enhance UI with improved time picker and metabolism slider
   [X] Add comprehensive FAQ section and educational content
   [X] Fix section organization for better user flow
+[X] Update sitemap and JSON-LD structured data
+  [X] Add new tool pages to sitemap.xml
+  [X] Add JSON-LD structured data to Smart Alarm and Caffeine Calculator pages
+  [X] Update Sleep Tracker page to match client component pattern
+  [X] Update lastmod dates for all pages in sitemap
 [X] Final code review and testing
   [X] Verify all pages load correctly
   [X] Test all interactive features
