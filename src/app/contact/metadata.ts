@@ -8,16 +8,16 @@ export const metadata: Metadata = {
     canonical: 'https://sleepcalc.net/contact'
   },
   openGraph: {
-    title: "Contact - Sleep Calculator | Calculate Your Ideal Sleep & Wake Times",
-    description: "Get in touch with the Sleep Calculator team. Contact us with your questions, feedback, partnership inquiries, or sleep science suggestions.",
+    title: "Contact Us - Sleep Calculator",
+    description: "Have questions about our sleep calculator or sleep tools? Contact our team for support, feedback, or inquiries about sleep science and sleep optimization.",
     url: "https://sleepcalc.net/contact",
     siteName: "Sleep Calculator",
     images: [
       {
-        url: "https://sleepcalc.net/images/contact-og.jpg",
+        url: "/og-image.png",
         width: 1200,
         height: 630,
-        alt: "Contact Sleep Calculator - Support & Inquiries"
+        alt: "Sleep Calculator - Contact Us"
       }
     ],
     locale: "en_US",
@@ -25,8 +25,8 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: "summary_large_image",
-    title: "Contact - Sleep Calculator | Calculate Your Ideal Sleep & Wake Times",
-    description: "Get in touch with the Sleep Calculator team. Contact us with your questions, feedback, partnership inquiries, or sleep science suggestions.",
-    images: ["https://sleepcalc.net/images/contact-og.jpg"],
+    title: "Contact Us - Sleep Calculator",
+    description: "Have questions about our sleep calculator or sleep tools? Contact our team for support, feedback, or inquiries about sleep science and optimization.",
+    images: ["/twitter-image.png"],
   }
 }; 

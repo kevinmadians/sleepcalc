@@ -11,7 +11,7 @@ export const metadata: Metadata = {
     siteName: "Sleep Calculator",
     images: [
       {
-        url: "https://sleepcalc.net/og-image.jpg",
+        url: "/og-image.png",
         width: 1200,
         height: 630,
         alt: "Sleep Calculator - Sleep Quality Tracker"
@@ -24,6 +24,6 @@ export const metadata: Metadata = {
     card: "summary_large_image",
     title: "Sleep Quality Tracker - Sleep Calculator",
     description: "Track your sleep quality, mood, and energy levels over time. Get personalized insights and recommendations to improve your sleep patterns. Explore sleep health insights and compare your sleep statistics with global averages.",
-    images: ["https://sleepcalc.net/og-image.jpg"],
+    images: ["/twitter-image.png"],
   }
 }; 

@@ -9,15 +9,15 @@ export const metadata: Metadata = {
   },
   openGraph: {
     title: "Nap Calculator - Sleep Calculator | Calculate Your Ideal Sleep & Wake Times",
-    description: "Find your ideal nap duration with our nap calculator. Calculate perfect power nap, refresh nap, or full cycle nap times based on your schedule for maximum energy and alertness.",
+    description: "Find the perfect nap duration with our Nap Calculator. Optimize your nap times for maximum energy and avoid post-nap grogginess.",
     url: "https://sleepcalc.net/nap-calculator",
     siteName: "Sleep Calculator",
     images: [
       {
-        url: "https://sleepcalc.net/images/nap-calculator-og.jpg",
+        url: "/og-image.png",
         width: 1200,
         height: 630,
-        alt: "Sleep Calculator - Nap Calculator"
+        alt: "Sleep Calculator - Nap Time Calculator"
       }
     ],
     locale: "en_US",
@@ -26,7 +26,7 @@ export const metadata: Metadata = {
   twitter: {
     card: "summary_large_image",
     title: "Nap Calculator - Sleep Calculator | Calculate Your Ideal Sleep & Wake Times",
-    description: "Find your ideal nap duration with our nap calculator. Calculate perfect power nap, refresh nap, or full cycle nap times based on your schedule.",
-    images: ["https://sleepcalc.net/images/nap-calculator-og.jpg"],
+    description: "Find the perfect nap duration with our Nap Calculator. Optimize your nap times for maximum energy and avoid post-nap grogginess.",
+    images: ["/twitter-image.png"],
   }
 }; 

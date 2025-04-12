@@ -14,7 +14,7 @@ export const metadata: Metadata = {
     siteName: "Sleep Calculator",
     images: [
       {
-        url: "https://sleepcalc.net/images/home-og.jpg",
+        url: "/og-image.png",
         width: 1200,
         height: 630,
         alt: "Sleep Calculator - Find Your Ideal Sleep Schedule"
@@ -27,7 +27,7 @@ export const metadata: Metadata = {
     card: "summary_large_image",
     title: "Sleep Calculator - Calculate Your Ideal Sleep & Wake Times",
     description: "Free online Sleep Calculator helps you find the best time to sleep and wake up based on 90-minute sleep cycles.",
-    images: ["https://sleepcalc.net/images/home-og.jpg"],
+    images: ["/twitter-image.png"],
     creator: "@sleepcalculator",
   },
   robots: {

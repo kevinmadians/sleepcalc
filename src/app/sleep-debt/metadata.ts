@@ -11,7 +11,7 @@ export const metadata: Metadata = {
     siteName: "Sleep Calculator",
     images: [
       {
-        url: "https://sleepcalc.net/og-image.jpg",
+        url: "/og-image.png",
         width: 1200,
         height: 630,
         alt: "Sleep Calculator - Sleep Debt Calculator"
@@ -24,6 +24,6 @@ export const metadata: Metadata = {
     card: "summary_large_image",
     title: "Sleep Debt Calculator - Sleep Calculator",
     description: "Calculate your sleep debt to understand how much sleep you're missing and learn how to recover. Track your sleep patterns and improve your sleep health.",
-    images: ["https://sleepcalc.net/og-image.jpg"],
+    images: ["/twitter-image.png"],
   }
 }; 

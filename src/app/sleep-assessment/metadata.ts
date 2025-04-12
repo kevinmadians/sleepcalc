@@ -14,7 +14,7 @@ export const metadata: Metadata = {
     siteName: "Sleep Calculator",
     images: [
       {
-        url: "https://sleepcalc.net/images/sleep-assessment-og.jpg",
+        url: "/og-image.png",
         width: 1200,
         height: 630,
         alt: "Sleep Calculator - Sleep Quality Assessment Quiz"
@@ -27,6 +27,6 @@ export const metadata: Metadata = {
     card: "summary_large_image",
     title: "Sleep Assessment - Sleep Calculator",
     description: "Take our free sleep quality assessment to evaluate your sleep habits and get personalized recommendations to improve your sleep health.",
-    images: ["https://sleepcalc.net/images/sleep-assessment-og.jpg"],
+    images: ["/twitter-image.png"],
   }
 }; 

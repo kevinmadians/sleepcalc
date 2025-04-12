@@ -14,7 +14,7 @@ export const metadata: Metadata = {
     siteName: "Sleep Calculator",
     images: [
       {
-        url: "https://sleepcalc.net/images/sleep-tips-og.jpg",
+        url: "/og-image.png",
         width: 1200,
         height: 630,
         alt: "Sleep Calculator - Sleep Tips & Better Sleep Guide"
@@ -31,6 +31,6 @@ export const metadata: Metadata = {
     card: "summary_large_image",
     title: "Sleep Tips - Sleep Calculator | Calculate Your Ideal Sleep & Wake Times",
     description: "Discover evidence-based sleep tips and techniques to improve your sleep quality. Learn about sleep hygiene, circadian rhythms, and sleep strategies.",
-    images: ["https://sleepcalc.net/images/sleep-tips-og.jpg"],
+    images: ["/twitter-image.png"],
   }
 }; 
